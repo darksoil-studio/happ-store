@@ -11,6 +11,7 @@
     tnesh-stack.url = "github:darksoil-studio/tnesh-stack/main-0.4";
     playground.url = "github:darksoil-studio/holochain-playground/main-0.4";
     p2p-shipyard.url = "github:darksoil-studio/p2p-shipyard/main-0.4";
+    aon.url = "github:darksoil-studio/always-online-nodes";
   };
 
   nixConfig = {
@@ -26,7 +27,7 @@
 
   outputs = inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [ ./happ.nix ];
+      imports = [ ./file_storage_provider/default.nix ./happ.nix ];
 
       systems = builtins.attrNames inputs.holonix.devShells;
       perSystem = { inputs', config, pkgs, system, ... }: {

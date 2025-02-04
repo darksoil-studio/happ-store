@@ -116,7 +116,7 @@ export class HolochainApp extends SignalWatcher(LitElement) {
 		return html`
 			<app-client-context .client=${this._client}>
 				<happs-context role="main">
-					<file-storage-context role="file_storage_provider">
+					<file-storage-context role="main" zome="file_storage_gateway">
 						${this.router.outlet()}
 					</file-storage-context>
 				</happs-context>

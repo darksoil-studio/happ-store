@@ -10,12 +10,23 @@ integrity:
     bundled: '../../../target/wasm32-unknown-unknown/release/happs_integrity.wasm'
     dependencies: null
     dylib: null
+  - name: file_storage_gateway_integrity
+    hash: null
+    bundled: ''
+    dependencies: null
+    dylib: null
 coordinator:
   zomes:
   - name: happs
     hash: null
-    bundled: '../../../target/wasm32-unknown-unknown/release/happs.wasm'
+    bundled: ''
     dependencies:
     - name: happs_integrity
+    dylib: null
+  - name: file_storage_gateway
+    hash: null
+    bundled: ''
+    dependencies:
+    - name: file_storage_gateway_integrity
     dylib: null
 lineage: []

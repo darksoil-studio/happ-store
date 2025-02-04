@@ -1,28 +1,28 @@
 {
-  "name": "happ-store-dev",
-  "private": true,
-  "scripts": {
-    "start": "AGENTS=2 pnpm network",
-    "network": "pnpm build:happ && UI_PORT=1420 concurrently -k \"pnpm -F ui start\" \"pnpm launch\" \"hc playground\"",
-    "launch": "concurrently-repeat \"hc pilot workdir/happ-store.happ --ui-port $UI_PORT\" $AGENTS",
-    "test": "pnpm build:happ && pnpm -F tests test",
-    "build:happ": "nix build -L .#happ-store_happ.meta.debug -o workdir/happ-store.happ",
-    "package": "nix build -L .#happ-store_happ -o workdir/happ-store.happ && pnpm -F ui package && hc web-app pack workdir"
-  },
-  "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-    "@eslint/js": "^9.0.0",
-    "concurrently": "^6.2.1",
-    "concurrently-repeat": "^0.0.1",
-    "eslint": "^9.0.0",
-    "eslint-config-prettier": "^9.1.0",
-    "new-port-cli": "^1.0.0",
-    "prettier": "^3.2.5",
-    "typescript-eslint": "^8.0.0",
-    "typescript": "^5.4.5"
-  },
-  "type": "module",
-  "engines": {
-    "pnpm": ">=9.0.0"
-  }
+	"name": "happ-store-dev",
+	"private": true,
+	"scripts": {
+		"start": "AGENTS=2 pnpm network",
+		"network": "pnpm build:happ && UI_PORT=1420 concurrently -k \"pnpm -F ui start\" \"pnpm launch\" \"hc playground\" \"nix run .#file_storage_provider_aon_debug\"",
+		"launch": "concurrently-repeat \"hc pilot workdir/happ-store.happ --ui-port $UI_PORT\" $AGENTS",
+		"test": "pnpm build:happ && pnpm -F tests test",
+		"build:happ": "nix build -L .#happ-store_happ.meta.debug -o workdir/happ-store.happ",
+		"package": "nix build -L .#happ-store_happ -o workdir/happ-store.happ && pnpm -F ui package && hc web-app pack workdir"
+	},
+	"devDependencies": {
+		"@trivago/prettier-plugin-sort-imports": "^4.3.0",
+		"@eslint/js": "^9.0.0",
+		"concurrently": "^6.2.1",
+		"concurrently-repeat": "^0.0.1",
+		"eslint": "^9.0.0",
+		"eslint-config-prettier": "^9.1.0",
+		"new-port-cli": "^1.0.0",
+		"prettier": "^3.2.5",
+		"typescript-eslint": "^8.0.0",
+		"typescript": "^5.4.5"
+	},
+	"type": "module",
+	"engines": {
+		"pnpm": ">=9.0.0"
+	}
 }
