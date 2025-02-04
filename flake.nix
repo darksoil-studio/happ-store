@@ -2,13 +2,13 @@
   description = "Template for Holochain app development";
 
   inputs = {
-    holonix.url = "github:holochain/holonix/main-0.3";
+    holonix.url = "github:holochain/holonix/main-0.4";
 
     nixpkgs.follows = "holonix/nixpkgs";
     flake-parts.follows = "holonix/flake-parts";
 
-    tnesh-stack.url = "github:darksoil-studio/tnesh-stack/main-0.3";
-    playground.url = "github:darksoil-studio/holochain-playground";
+    tnesh-stack.url = "github:darksoil-studio/tnesh-stack/main-0.4";
+    playground.url = "github:darksoil-studio/holochain-playground/main-0.4";
   };
 
   nixConfig = {
@@ -23,33 +23,21 @@
   };
 
   outputs = inputs:
-    inputs.flake-parts.lib.mkFlake
-      {
-        inherit inputs;
-      }
-      {
-        imports = [
-          ./happ.nix
-        ];
-      
-        systems = builtins.attrNames inputs.holonix.devShells;
-        perSystem =
-          { inputs'
-          , config
-          , pkgs
-          , system
-          , ...
-          }: {
-            devShells.default = pkgs.mkShell {
-              inputsFrom = [ 
-                inputs'.tnesh-stack.devShells.synchronized-pnpm
-                inputs'.holonix.devShells.default
-              ];
-              packages = [
-                inputs'.tnesh-stack.packages.hc-scaffold-happ
-                inputs'.playground.packages.hc-playground
-              ];
-            };
-          };
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [ ./happ.nix ];
+
+      systems = builtins.attrNames inputs.holonix.devShells;
+      perSystem = { inputs', config, pkgs, system, ... }: {
+        devShells.default = pkgs.mkShell {
+          inputsFrom = [
+            inputs'.tnesh-stack.devShells.synchronized-pnpm
+            inputs'.holonix.devShells.default
+          ];
+          packages = [
+            inputs'.tnesh-stack.packages.hc-scaffold-happ
+            inputs'.playground.packages.hc-playground
+          ];
+        };
       };
+    };
 }
