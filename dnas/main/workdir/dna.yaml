@@ -1,0 +1,21 @@
+manifest_version: '1'
+name: main
+integrity:
+  network_seed: null
+  properties: null
+  origin_time: 1738677483083641
+  zomes:
+  - name: happs_integrity
+    hash: null
+    bundled: '../../../target/wasm32-unknown-unknown/release/happs_integrity.wasm'
+    dependencies: null
+    dylib: null
+coordinator:
+  zomes:
+  - name: happs
+    hash: null
+    bundled: '../../../target/wasm32-unknown-unknown/release/happs.wasm'
+    dependencies:
+    - name: happs_integrity
+    dylib: null
+lineage: []

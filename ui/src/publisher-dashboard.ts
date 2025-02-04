@@ -10,8 +10,8 @@ import { customElement } from 'lit/decorators.js';
 import { appStyles } from './app-styles.js';
 import { rootRouterContext } from './context.js';
 
-@customElement('home-page')
-export class HomePage extends SignalWatcher(LitElement) {
+@customElement('publisher-dashboard')
+export class PublisherDashboard extends SignalWatcher(LitElement) {
 	@consume({ context: appClientContext })
 	client!: AppClient;
 
@@ -37,7 +37,7 @@ export class HomePage extends SignalWatcher(LitElement) {
 						<sl-button
 							variant="primary"
 							@click=${() => this.router.goto('/publisher-dashboard')}
-							>${msg('Publisher Dashboard')}
+							>${msg('Create App')}
 						</sl-button>
 					</div>
 				</div>

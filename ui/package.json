@@ -12,11 +12,11 @@
     "localize:build": "lit-localize build"
   },
   "dependencies": {
-    "@holochain/client": "^0.17.1",
-    "@darksoil-studio/profiles-zome": "github:darksoil-studio/profiles-zome#main-0.4&path:ui",
-    "@tnesh-stack/elements": "^0.300.5",
-    "@tnesh-stack/signals": "^0.300.0",
-    "@tnesh-stack/utils": "^0.300.0",
+    "@darksoil-studio/file-storage-zome": "github:darksoil-studio/file-storage#e75ba27f2bf7ef74b7f12a1de1121558ff37dae5&path:ui",
+    "@holochain/client": "^0.18.0",
+    "@tnesh-stack/elements": "^0.400.0",
+    "@tnesh-stack/signals": "^0.400.0",
+    "@tnesh-stack/utils": "^0.400.0",
     "@lit/context": "^1.0.0",
     "@lit/localize": "^0.12.0",
     "@mdi/js": "^7.2.0",

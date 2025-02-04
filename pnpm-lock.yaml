@@ -17,6 +17,9 @@ importers:
       concurrently:
         specifier: ^6.2.1
         version: 6.5.1
+      concurrently-repeat:
+        specifier: ^0.0.1
+        version: 0.0.1
       eslint:
         specifier: ^9.0.0
         version: 9.19.0
@@ -62,12 +65,12 @@ importers:
 
   ui:
     dependencies:
-      '@darksoil-studio/profiles-zome':
-        specifier: github:darksoil-studio/profiles-zome#main-0.4&path:ui
-        version: https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/92d29d0b9f7a186d24d7a820d0ab42506ee8cad9#path:ui(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
+      '@darksoil-studio/file-storage-zome':
+        specifier: github:darksoil-studio/file-storage#e75ba27f2bf7ef74b7f12a1de1121558ff37dae5&path:ui
+        version: https://codeload.github.com/darksoil-studio/file-storage/tar.gz/e75ba27f2bf7ef74b7f12a1de1121558ff37dae5#path:ui(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
       '@holochain/client':
-        specifier: ^0.17.1
-        version: 0.17.1
+        specifier: ^0.18.0
+        version: 0.18.0
       '@lit/context':
         specifier: ^1.0.0
         version: 1.1.3
@@ -84,14 +87,14 @@ importers:
         specifier: ^2.11.0
         version: 2.20.0(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
       '@tnesh-stack/elements':
-        specifier: ^0.300.5
-        version: 0.300.5(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
+        specifier: ^0.400.0
+        version: 0.400.1(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
       '@tnesh-stack/signals':
-        specifier: ^0.300.0
-        version: 0.300.1
+        specifier: ^0.400.0
+        version: 0.400.0
       '@tnesh-stack/utils':
-        specifier: ^0.300.0
-        version: 0.300.0
+        specifier: ^0.400.0
+        version: 0.400.0
       lit:
         specifier: ^3.0.0
         version: 3.2.1
@@ -208,12 +211,8 @@ packages:
   '@dabh/diagnostics@2.0.3':
     resolution: {integrity: sha512-hrlQOIi7hAfzsMqlGSFyVucrx38O+j6wiGOf//H2ecvIEqYN4ADBSS2iLMh5UFyDunCNniUIPk/q3riFv45xRA==}
 
-  '@darksoil-studio/linked-devices-zome@https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/15d40409f54b6b826d5f0fbd666c34e59ff78fde#path:ui':
-    resolution: {path: ui, tarball: https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/15d40409f54b6b826d5f0fbd666c34e59ff78fde}
-    version: 0.1.0
-
-  '@darksoil-studio/profiles-zome@https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/92d29d0b9f7a186d24d7a820d0ab42506ee8cad9#path:ui':
-    resolution: {path: ui, tarball: https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/92d29d0b9f7a186d24d7a820d0ab42506ee8cad9}
+  '@darksoil-studio/file-storage-zome@https://codeload.github.com/darksoil-studio/file-storage/tar.gz/e75ba27f2bf7ef74b7f12a1de1121558ff37dae5#path:ui':
+    resolution: {path: ui, tarball: https://codeload.github.com/darksoil-studio/file-storage/tar.gz/e75ba27f2bf7ef74b7f12a1de1121558ff37dae5}
     version: 0.400.0
 
   '@esbuild/aix-ppc64@0.21.5':
@@ -599,6 +598,9 @@ packages:
   '@lit-labs/ssr-dom-shim@1.3.0':
     resolution: {integrity: sha512-nQIWonJ6eFAvUUrSlwyHDm/aE8PBDu5kRpL0vHMg6K8fK3Diq1xdPjTnsJSwxABhaZ+5eBi1btQB5ShUTKo4nQ==}
 
+  '@lit-labs/task@2.1.2':
+    resolution: {integrity: sha512-pDjPYojmCXnOezT/4BgqxHA2kahmSsCE0y6uPCYyVqigIx9DJav05s0KAtD9IImTY3LvWu5isSlq6nkWagAybA==}
+
   '@lit/context@1.1.3':
     resolution: {integrity: sha512-Auh37F4S0PZM93HTDfZWs97mmzaQ7M3vnTc9YvxAGyP3UItSK/8Fs0vTOGT+njuvOwbKio/l8Cx/zWL4vkutpQ==}
 
@@ -740,6 +742,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@scoped-elements/dropzone@0.2.7':
+    resolution: {integrity: sha512-/3qcTHanOQ7YayikIw2cmmSA0QMEcedadHiIHiUjNtyf9VjwVL50HLt09MKkRQYKbxFbR4EsKRFTFmiJdmiJew==}
+
   '@shoelace-style/animations@1.2.0':
     resolution: {integrity: sha512-avvo1xxkLbv2dgtabdewBbqcJfV0e0zCwFqkPMnHFGbJbBHorRFfMAHh1NG9ymmXn0jW95ibUVH03E1NYXD6Gw==}
 
@@ -752,15 +757,6 @@ packages:
 
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
-
-  '@tauri-apps/api@2.2.0':
-    resolution: {integrity: sha512-R8epOeZl1eJEl603aUMIGb4RXlhPjpgxbGVEaqY+0G5JG9vzV/clNlzTeqc+NLYXVqXcn8mb4c5b9pJIUDEyAg==}
-
-  '@tauri-apps/plugin-barcode-scanner@2.2.0':
-    resolution: {integrity: sha512-16AgAjNZGS790KXTW2oq7K0YKUCxLmlDlizN7+pBvIcZzdR3kYzHSST/CYSXkAkYRParyHmE2nMsMvqJFAHKbA==}
-
-  '@tnesh-stack/elements@0.300.5':
-    resolution: {integrity: sha512-3KgGq4kTosHjmwu2EqW8weTtO1m6cth8R/Plqs+U6c5wilUYer4sCGypX98WDyYGF6Fz/4gVURmlusqEiSvixw==}
 
   '@tnesh-stack/elements@0.400.1':
     resolution: {integrity: sha512-kKD4G1KjzqUNjlOY8xjIH7/zRyYztJZgBTv3FhMRQ1DKoB6pCXPpuKuuxY85wFIioeCX1aegwbGaFJCLMzqsXQ==}
@@ -786,14 +782,23 @@ packages:
       '@vue/compiler-sfc':
         optional: true
 
+  '@types/dropzone@5.7.9':
+    resolution: {integrity: sha512-c6IlUz+DeQ4gANzJKn8fdP5rO6UyDNOyWLjfPbDRUHCNsXaAVKQOpuOv6LWEyvaK7pLqmoIpvSIlvBgGsk1vGw==}
+
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
+
+  '@types/jquery@3.5.32':
+    resolution: {integrity: sha512-b9Xbf4CkMqS02YH8zACqN1xzdxc3cO735Qe5AbSUFmyOiaWAbcpqh9Wna+Uk0vgACvoQHpWDg2rGdHkYPLmCiQ==}
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
   '@types/react@19.0.8':
     resolution: {integrity: sha512-9P/o1IGdfmQxrujGbIMDyYaaCykhLKc0NGCtYcECNUr9UAaDe4gwvV9bR6tvd5Br1SG0j+PBpbKr2UYY8CwqSw==}
+
+  '@types/sizzle@2.3.9':
+    resolution: {integrity: sha512-xzLEyKB50yqCUPUJkIsrVvoWNfFUbIZI+RspLWt8u+tIW/BetMBZtgV2LY/2o+tYH8dRvQ+eoPf3NdhQCcLE2w==}
 
   '@types/triple-beam@1.3.5':
     resolution: {integrity: sha512-6WaYesThRMCl19iryMYP7/x2OVgCtbIVflDGFpWnb9irXI3UjYE4AzmYuiUKY1AJstGijoY+MgUszMgRxIYTYw==}
@@ -1052,6 +1057,10 @@ packages:
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
+  concurrently-repeat@0.0.1:
+    resolution: {integrity: sha512-9UR6DJRsn1D8tGjK6L7BR2cTkfTQXRJRokoaC3KQgthRBEKHwXJzWXt3EQ3V9hjaURHYX5vAeEjt5aWhCpvSwQ==}
+    hasBin: true
+
   concurrently@6.5.1:
     resolution: {integrity: sha512-FlSwNpGjWQfRwPLXvJ/OgysbBxPkWpiVjy1042b0U7on7S7qwwMIILRj7WTN1mTgqa582bG6NFuScOoh6Zgdag==}
     engines: {node: '>=10.0.0'}
@@ -1112,6 +1121,9 @@ packages:
   dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
     engines: {node: '>=8'}
+
+  dropzone@5.9.3:
+    resolution: {integrity: sha512-Azk8kD/2/nJIuVPK+zQ9sjKMRIpRvNyqn9XwbBHNq+iNuSccbJS6hwm1Woy0pMST0erSo0u4j+KJaodndDk4vA==}
 
   emittery@1.1.0:
     resolution: {integrity: sha512-rsX7ktqARv/6UQDgMaLfIqUWAEzzbCQiVh7V9rhDXp6c37yoJcks12NVD+XPkgl4AEavmNhVfrhGoqYwIsMYYA==}
@@ -1322,6 +1334,9 @@ packages:
   human-signals@5.0.0:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
     engines: {node: '>=16.17.0'}
+
+  idb-keyval@6.2.1:
+    resolution: {integrity: sha512-8Sb3veuYCyrZL+VBt9LJfZjLUPWVvqn8tG28VqYNFCo43KHcKuq+b4EiXGeuaLAQWL2YmyDgMp2aSpH9JHsEQg==}
 
   ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
@@ -2215,38 +2230,19 @@ snapshots:
       enabled: 2.0.0
       kuler: 2.0.0
 
-  '@darksoil-studio/linked-devices-zome@https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/15d40409f54b6b826d5f0fbd666c34e59ff78fde#path:ui(@floating-ui/utils@0.2.9)(@types/react@19.0.8)':
+  '@darksoil-studio/file-storage-zome@https://codeload.github.com/darksoil-studio/file-storage/tar.gz/e75ba27f2bf7ef74b7f12a1de1121558ff37dae5#path:ui(@floating-ui/utils@0.2.9)(@types/react@19.0.8)':
     dependencies:
       '@holochain/client': 0.18.0
+      '@lit-labs/task': 2.1.2
       '@lit/context': 1.1.3
       '@lit/localize': 0.12.2
       '@mdi/js': 7.4.47
-      '@msgpack/msgpack': 2.8.0
+      '@scoped-elements/dropzone': 0.2.7(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
       '@shoelace-style/shoelace': 2.20.0(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
-      '@tauri-apps/plugin-barcode-scanner': 2.2.0
       '@tnesh-stack/elements': 0.400.1(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
-      '@tnesh-stack/signals': 0.400.0
       '@tnesh-stack/utils': 0.400.0
+      idb-keyval: 6.2.1
       js-base64: 3.7.7
-      lit: 3.2.1
-    transitivePeerDependencies:
-      - '@floating-ui/utils'
-      - '@types/react'
-      - bufferutil
-      - utf-8-validate
-
-  '@darksoil-studio/profiles-zome@https://codeload.github.com/darksoil-studio/profiles-zome/tar.gz/92d29d0b9f7a186d24d7a820d0ab42506ee8cad9#path:ui(@floating-ui/utils@0.2.9)(@types/react@19.0.8)':
-    dependencies:
-      '@darksoil-studio/linked-devices-zome': https://codeload.github.com/darksoil-studio/linked-devices-zome/tar.gz/15d40409f54b6b826d5f0fbd666c34e59ff78fde#path:ui(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
-      '@holochain/client': 0.18.0
-      '@lit/context': 1.1.3
-      '@lit/localize': 0.12.2
-      '@mdi/js': 7.4.47
-      '@msgpack/msgpack': 2.8.0
-      '@shoelace-style/shoelace': 2.20.0(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
-      '@tnesh-stack/elements': 0.400.1(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
-      '@tnesh-stack/signals': 0.400.0
-      '@tnesh-stack/utils': 0.400.0
       lit: 3.2.1
     transitivePeerDependencies:
       - '@floating-ui/utils'
@@ -2530,6 +2526,10 @@ snapshots:
 
   '@lit-labs/ssr-dom-shim@1.3.0': {}
 
+  '@lit-labs/task@2.1.2':
+    dependencies:
+      '@lit/reactive-element': 1.6.3
+
   '@lit/context@1.1.3':
     dependencies:
       '@lit/reactive-element': 2.0.4
@@ -2646,6 +2646,17 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.34.2':
     optional: true
 
+  '@scoped-elements/dropzone@0.2.7(@floating-ui/utils@0.2.9)(@types/react@19.0.8)':
+    dependencies:
+      '@mdi/js': 7.4.47
+      '@shoelace-style/shoelace': 2.20.0(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
+      '@types/dropzone': 5.7.9
+      dropzone: 5.9.3
+      lit: 2.8.0
+    transitivePeerDependencies:
+      - '@floating-ui/utils'
+      - '@types/react'
+
   '@shoelace-style/animations@1.2.0': {}
 
   '@shoelace-style/localize@3.2.1': {}
@@ -2665,28 +2676,6 @@ snapshots:
       - '@types/react'
 
   '@sinclair/typebox@0.27.8': {}
-
-  '@tauri-apps/api@2.2.0': {}
-
-  '@tauri-apps/plugin-barcode-scanner@2.2.0':
-    dependencies:
-      '@tauri-apps/api': 2.2.0
-
-  '@tnesh-stack/elements@0.300.5(@floating-ui/utils@0.2.9)(@types/react@19.0.8)':
-    dependencies:
-      '@holo-host/identicon': 0.1.0
-      '@holochain/client': 0.17.1
-      '@lit-labs/router': 0.1.3
-      '@lit/context': 1.1.3
-      '@lit/localize': 0.12.2
-      '@mdi/js': 7.4.47
-      '@shoelace-style/shoelace': 2.20.0(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
-      lit: 3.2.1
-    transitivePeerDependencies:
-      - '@floating-ui/utils'
-      - '@types/react'
-      - bufferutil
-      - utf-8-validate
 
   '@tnesh-stack/elements@0.400.1(@floating-ui/utils@0.2.9)(@types/react@19.0.8)':
     dependencies:
@@ -2769,13 +2758,23 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@types/dropzone@5.7.9':
+    dependencies:
+      '@types/jquery': 3.5.32
+
   '@types/estree@1.0.6': {}
+
+  '@types/jquery@3.5.32':
+    dependencies:
+      '@types/sizzle': 2.3.9
 
   '@types/json-schema@7.0.15': {}
 
   '@types/react@19.0.8':
     dependencies:
       csstype: 3.1.3
+
+  '@types/sizzle@2.3.9': {}
 
   '@types/triple-beam@1.3.5': {}
 
@@ -3122,6 +3121,11 @@ snapshots:
 
   concat-map@0.0.1: {}
 
+  concurrently-repeat@0.0.1:
+    dependencies:
+      concurrently: 6.5.1
+      yargs: 16.2.0
+
   concurrently@6.5.1:
     dependencies:
       chalk: 4.1.2
@@ -3175,6 +3179,8 @@ snapshots:
   dir-glob@3.0.1:
     dependencies:
       path-type: 4.0.0
+
+  dropzone@5.9.3: {}
 
   emittery@1.1.0: {}
 
@@ -3441,6 +3447,8 @@ snapshots:
   has-flag@4.0.0: {}
 
   human-signals@5.0.0: {}
+
+  idb-keyval@6.2.1: {}
 
   ieee754@1.2.1: {}
 
