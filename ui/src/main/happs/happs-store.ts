@@ -47,4 +47,28 @@ export class HappsStore {
       () => this.client.getAllRevisionsForHappVersion(happVersionHash),
     ),
   }));
+
+  /** All Happs */
+
+  allHapps = pipe(
+    collectionSignal(
+      this.client,
+      () => this.client.getAllHapps(),
+      "AllHapps",
+    ),
+    allHapps => slice(this.happs, allHapps.map(l => l.target)),
+  );
+
+  /** Publisher Happs */
+
+  publisherHapps = new MemoHoloHashMap((author: AgentPubKey) =>
+    pipe(
+      collectionSignal(
+        this.client,
+        () => this.client.getPublisherHapps(author),
+        "PublisherHapps",
+      ),
+      publisherHapps => slice(this.happs, publisherHapps.map(l => l.target)),
+    )
+  );
 }

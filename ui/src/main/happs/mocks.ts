@@ -191,6 +191,37 @@ export class HappsZomeMock extends ZomeMock implements AppClient {
   async get_happ_versions_for_happ(happHash: ActionHash): Promise<Array<Link>> {
     return this.happVersionsForHapp.get(happHash) || [];
   }
+
+  async get_all_happs(): Promise<Array<Link>> {
+    const records: Record[] = Array.from(this.happs.values()).map(r => r.revisions[r.revisions.length - 1]);
+    const base = await fakeEntryHash();
+    return Promise.all(records.map(async record => ({
+      base,
+      target: record.signed_action.hashed.hash,
+      author: record.signed_action.hashed.content.author,
+      timestamp: record.signed_action.hashed.content.timestamp,
+      zome_index: 0,
+      link_type: 0,
+      tag: new Uint8Array(),
+      create_link_hash: await fakeActionHash(),
+    })));
+  }
+
+  async get_publisher_happs(author: AgentPubKey): Promise<Array<Link>> {
+    const records: Record[] = Array.from(this.happs.values()).map(r => r.revisions[r.revisions.length - 1]).filter(r =>
+      r.signed_action.hashed.content.author.toString() === author.toString()
+    );
+    return Promise.all(records.map(async record => ({
+      base: author,
+      target: record.signed_action.hashed.hash,
+      author: record.signed_action.hashed.content.author,
+      timestamp: record.signed_action.hashed.content.timestamp,
+      zome_index: 0,
+      link_type: 0,
+      tag: new Uint8Array(),
+      create_link_hash: await fakeActionHash(),
+    })));
+  }
 }
 
 export async function sampleHapp(client: HappsClient, partialHapp: Partial<Happ> = {}): Promise<Happ> {

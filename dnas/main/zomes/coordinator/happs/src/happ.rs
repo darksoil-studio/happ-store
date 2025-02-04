@@ -7,6 +7,20 @@ pub fn create_happ(happ: Happ) -> ExternResult<Record> {
     let record = get(happ_hash.clone(), GetOptions::default())?.ok_or(wasm_error!(
         WasmErrorInner::Guest("Could not find the newly created Happ".to_string())
     ))?;
+    let path = Path::from("all_happs");
+    create_link(
+        path.path_entry_hash()?,
+        happ_hash.clone(),
+        LinkTypes::AllHapps,
+        (),
+    )?;
+    let my_agent_pub_key = agent_info()?.agent_latest_pubkey;
+    create_link(
+        my_agent_pub_key,
+        happ_hash.clone(),
+        LinkTypes::PublisherHapps,
+        (),
+    )?;
     Ok(record)
 }
 
@@ -97,6 +111,37 @@ pub fn update_happ(input: UpdateHappInput) -> ExternResult<Record> {
 
 #[hdk_extern]
 pub fn delete_happ(original_happ_hash: ActionHash) -> ExternResult<ActionHash> {
+    let path = Path::from("all_happs");
+    let links = get_links(
+        GetLinksInputBuilder::try_new(path.path_entry_hash()?, LinkTypes::AllHapps)?.build(),
+    )?;
+    for link in links {
+        if let Some(hash) = link.target.into_action_hash() {
+            if hash == original_happ_hash {
+                delete_link(link.create_link_hash)?;
+            }
+        }
+    }
+    let details = get_details(original_happ_hash.clone(), GetOptions::default())?.ok_or(
+        wasm_error!(WasmErrorInner::Guest("Happ not found".to_string())),
+    )?;
+    let record = match details {
+        Details::Record(details) => Ok(details.record),
+        _ => Err(wasm_error!(WasmErrorInner::Guest(
+            "Malformed get details response".to_string()
+        ))),
+    }?;
+    let links = get_links(
+        GetLinksInputBuilder::try_new(record.action().author().clone(), LinkTypes::PublisherHapps)?
+            .build(),
+    )?;
+    for link in links {
+        if let Some(hash) = link.target.into_action_hash() {
+            if hash == original_happ_hash {
+                delete_link(link.create_link_hash)?;
+            }
+        }
+    }
     delete_entry(original_happ_hash)
 }
 

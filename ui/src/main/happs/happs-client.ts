@@ -106,4 +106,16 @@ export class HappsClient extends ZomeClient<HappsSignal> {
   async getHappVersionsForHapp(happHash: ActionHash): Promise<Array<Link>> {
     return this.callZome("get_happ_versions_for_happ", happHash);
   }
+
+  /** All Happs */
+
+  async getAllHapps(): Promise<Array<Link>> {
+    return this.callZome("get_all_happs", undefined);
+  }
+
+  /** Publisher Happs */
+
+  async getPublisherHapps(author: AgentPubKey): Promise<Array<Link>> {
+    return this.callZome("get_publisher_happs", author);
+  }
 }
