@@ -1,5 +1,10 @@
 import '@darksoil-studio/file-storage-zome/dist/elements/file-storage-context.js';
-import { ActionHash, AppClient, AppWebsocket } from '@holochain/client';
+import {
+	ActionHash,
+	AdminWebsocket,
+	AppClient,
+	AppWebsocket,
+} from '@holochain/client';
 import { provide } from '@lit/context';
 import { localized, msg } from '@lit/localize';
 import { mdiArrowLeft } from '@mdi/js';
@@ -14,9 +19,10 @@ import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 import { appStyles } from './app-styles.js';
-import { rootRouterContext } from './context.js';
+import { adminWebsocketContext, rootRouterContext } from './context.js';
 import './home-page.js';
 import './main/happs/elements/happs-context.js';
+import './publisher-dashboard.js';
 
 @localized()
 @customElement('holochain-app')
@@ -48,7 +54,7 @@ export class HolochainApp extends SignalWatcher(LitElement) {
 				></home-page>`,
 		},
 		{
-			path: '/publisher-dashboard',
+			path: '/publisher-dashboard/*',
 			render: () =>
 				html`<publisher-dashboard
 					@profile-clicked=${() => this.router.goto('/my-profile')}

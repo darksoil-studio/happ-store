@@ -1,6 +1,7 @@
 import { AppClient } from '@holochain/client';
 import { consume } from '@lit/context';
 import { msg } from '@lit/localize';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 import { Router, Routes, appClientContext } from '@tnesh-stack/elements';
 import '@tnesh-stack/elements/dist/elements/display-error.js';
 import { AsyncResult, SignalWatcher } from '@tnesh-stack/signals';
@@ -9,6 +10,7 @@ import { customElement } from 'lit/decorators.js';
 
 import { appStyles } from './app-styles.js';
 import { rootRouterContext } from './context.js';
+import './main/happs/elements/all-happs.js';
 
 @customElement('home-page')
 export class HomePage extends SignalWatcher(LitElement) {
@@ -19,12 +21,7 @@ export class HomePage extends SignalWatcher(LitElement) {
 	router!: Router;
 
 	renderContent() {
-		return html`
-			<span>TODO: replace this with the content of your app.</span>
-			<span
-				>Maybe you want to import elements from one of the TNESH modules?</span
-			>
-		`;
+		return html``;
 	}
 
 	render() {
@@ -36,17 +33,18 @@ export class HomePage extends SignalWatcher(LitElement) {
 					<div class="row" style="gap: 16px">
 						<sl-button
 							variant="primary"
-							@click=${() => this.router.goto('/publisher-dashboard')}
+							@click=${() => this.router.goto('/publisher-dashboard/')}
 							>${msg('Publisher Dashboard')}
 						</sl-button>
 					</div>
 				</div>
 
-				<div
-					class="column"
-					style="flex: 1; align-items: center; justify-content: center;"
-				>
-					${this.renderContent()}
+				<div class="flex-scrollable-parent">
+					<div class="flex-scrollable-container">
+						<div class="flex-scrollable-y">
+							<all-happs style="margin: 16px"> </all-happs>
+						</div>
+					</div>
 				</div>
 			</div>
 		`;
