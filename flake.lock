@@ -105,11 +105,11 @@
         "tnesh-stack": "tnesh-stack"
       },
       "locked": {
-        "lastModified": 1738682995,
-        "narHash": "sha256-Wf15Q8/E3xQ/Th66+FUiUKv/VGY42UmpglW3VKZBQYU=",
+        "lastModified": 1738759911,
+        "narHash": "sha256-Nl4O1VGTYBlN16g/usJryPRp1yDSVFgR9vrtLEUjrmQ=",
         "owner": "darksoil-studio",
         "repo": "always-online-nodes",
-        "rev": "512f44c3022d4027561ad537bc1bbe587528ce50",
+        "rev": "324d3c1431cd543da519c6f306390cb780bb3bbf",
         "type": "github"
       },
       "original": {
@@ -497,11 +497,11 @@
         "tnesh-stack": "tnesh-stack_5"
       },
       "locked": {
-        "lastModified": 1738677160,
-        "narHash": "sha256-KoAHGZUFvdsDPZ0GjEvOUOdtdFkS7GbyWGohKr8WH1s=",
+        "lastModified": 1738759111,
+        "narHash": "sha256-iNbrcibVrl9WWNYkNrDWS3HQ8aJX4Bf3SAruTOn5lt0=",
         "owner": "darksoil-studio",
         "repo": "file-storage",
-        "rev": "e75ba27f2bf7ef74b7f12a1de1121558ff37dae5",
+        "rev": "050c6c739938e0af8911c004f55912d7de198ae3",
         "type": "github"
       },
       "original": {
@@ -3409,11 +3409,11 @@
         "tnesh-stack": "tnesh-stack_6"
       },
       "locked": {
-        "lastModified": 1738678504,
-        "narHash": "sha256-0UxkghgY5sCjQ23eE3J9PDGBfnRcEyjH8+xyiIzjf5g=",
+        "lastModified": 1738754368,
+        "narHash": "sha256-iBNVDjtfX29LB4XWfNb9XApAeNw3Lk4HuYYjcztltl8=",
         "owner": "darksoil-studio",
         "repo": "p2p-shipyard",
-        "rev": "1951f7c873e7aa7d151c0508bcd674836fc1ae8e",
+        "rev": "14aa94384c88e1fe627d83b0d8f9554fa82b1152",
         "type": "github"
       },
       "original": {
@@ -3502,11 +3502,11 @@
         "tnesh-stack": "tnesh-stack_8"
       },
       "locked": {
-        "lastModified": 1738677259,
-        "narHash": "sha256-qOEc5RMGZLWntXeuFyLgsAAxvUWvi73bMNSG+MX8o6o=",
+        "lastModified": 1738752024,
+        "narHash": "sha256-xdHRCw0yUAiGct5PELvQ+47cDV0tj4Hv4EOy9MGTybU=",
         "owner": "darksoil-studio",
         "repo": "holochain-playground",
-        "rev": "37f36273e4fcc1c87a03410fca2fe674ac443121",
+        "rev": "7b276709989c3dd00b398a9ab728561fd2ef3174",
         "type": "github"
       },
       "original": {
