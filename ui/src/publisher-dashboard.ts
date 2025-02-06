@@ -5,7 +5,7 @@ import {
 } from '@holochain/client';
 import { consume } from '@lit/context';
 import { msg } from '@lit/localize';
-import { mdiArrowLeft, mdiArrowLeftBold } from '@mdi/js';
+import { mdiArrowLeft, mdiArrowLeftBold, mdiChartBubble } from '@mdi/js';
 import {
 	Router,
 	Routes,
@@ -38,56 +38,6 @@ export class PublisherDashboard extends SignalWatcher(LitElement) {
 	@property()
 	happStore!: HappsStore;
 
-	routes = new Routes(this, [
-		{
-			path: '',
-			render: () => html`
-				<publisher-happs
-					style="margin: 16px"
-					.author=${this.client.myPubKey}
-					@happ-selected=${(e: CustomEvent) =>
-						this.routes.goto(`happ/${encodeHashToBase64(e.detail.happHash)}/`)}
-				></publisher-happs>
-			`,
-		},
-		{
-			path: 'create-happ',
-			render: () => html`
-				<overlay-page
-					.title=${msg('Create hApp')}
-					@close-requested=${() => this.routes.goto('')}
-				>
-					<create-happ
-						style="min-width: 600px"
-						@happ-created=${() => this.routes.goto('')}
-					>
-					</create-happ>
-				</overlay-page>
-			`,
-		},
-		{
-			path: 'happ/:happHash/*',
-			render: params => {
-				const title = this.happStore.happs
-					.get(decodeHashFromBase64(params.happHash!))
-					.latestVersion.get();
-				return html`
-					<overlay-page
-						icon="back"
-						.title=${title.status === 'completed' ? title.value.entry.name : ''}
-						@close-requested=${() => this.routes.goto('')}
-					>
-						<happ-detail
-							style="width: 600px"
-							.happHash=${decodeHashFromBase64(params.happHash!)}
-						>
-						</happ-detail>
-					</overlay-page>
-				`;
-			},
-		},
-	]);
-
 	render() {
 		return html`
 			<div class="column" style="flex: 1">
@@ -103,7 +53,13 @@ export class PublisherDashboard extends SignalWatcher(LitElement) {
 					<div class="row" style="gap: 16px">
 						<sl-button
 							variant="primary"
-							@click=${() => this.routes.goto('create-happ')}
+							@click=${() =>
+								this.dispatchEvent(
+									new CustomEvent('create-happ-selected', {
+										bubbles: true,
+										composed: true,
+									}),
+								)}
 							>${msg('Create App')}
 						</sl-button>
 					</div>
@@ -111,7 +67,12 @@ export class PublisherDashboard extends SignalWatcher(LitElement) {
 
 				<div class="flex-scrollable-parent">
 					<div class="flex-scrollable-container">
-						<div class="flex-scrollable-y">${this.routes.outlet()}</div>
+						<div class="flex-scrollable-y">
+							<publisher-happs
+								style="margin: 16px"
+								.author=${this.client.myPubKey}
+							></publisher-happs>
+						</div>
 					</div>
 				</div>
 			</div>

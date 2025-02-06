@@ -4,6 +4,8 @@ import {
 	AdminWebsocket,
 	AppClient,
 	AppWebsocket,
+	decodeHashFromBase64,
+	encodeHashToBase64,
 } from '@holochain/client';
 import { provide } from '@lit/context';
 import { localized, msg } from '@lit/localize';
@@ -22,6 +24,7 @@ import { appStyles } from './app-styles.js';
 import { adminWebsocketContext, rootRouterContext } from './context.js';
 import './home-page.js';
 import './main/happs/elements/happs-context.js';
+import { HappsContext } from './main/happs/elements/happs-context.js';
 import './publisher-dashboard.js';
 
 @localized()
@@ -42,23 +45,99 @@ export class HolochainApp extends SignalWatcher(LitElement) {
 			path: '/',
 			enter: () => {
 				// Redirect to "/home/"
-				this.router.goto('/home/');
+				this.router.goto('/home');
 				return false;
 			},
 		},
 		{
-			path: '/home/*',
+			path: '/home',
 			render: () =>
 				html`<home-page
 					@profile-clicked=${() => this.router.goto('/my-profile')}
 				></home-page>`,
 		},
 		{
-			path: '/publisher-dashboard/*',
+			path: '/publisher-dashboard',
 			render: () =>
 				html`<publisher-dashboard
+					@happ-selected=${(e: CustomEvent) =>
+						this.router.goto(`/happ/${encodeHashToBase64(e.detail.happHash)}`)}
+					@create-happ-selected=${() => this.router.goto('/create-happ')}
 					@profile-clicked=${() => this.router.goto('/my-profile')}
 				></publisher-dashboard>`,
+		},
+		{
+			path: '/create-happ',
+			render: () => html`
+				<overlay-page
+					.title=${msg('Create hApp')}
+					@close-requested=${() => this.router.goto('/publisher-dashboard')}
+				>
+					<create-happ
+						style="min-width: 600px"
+						@happ-created=${() => this.router.goto('/publisher-dashboard')}
+					>
+					</create-happ>
+				</overlay-page>
+			`,
+		},
+		{
+			path: '/happ/:happHash',
+			render: params => {
+				const title = this.happStore.happs
+					.get(decodeHashFromBase64(params.happHash!))
+					.latestVersion.get();
+				return html`
+					<overlay-page
+						icon="back"
+						.title=${title.status === 'completed' ? title.value.entry.name : ''}
+						@close-requested=${() => this.router.goto('/publisher-dashboard')}
+					>
+						<happ-detail
+							style="width: 600px"
+							.happHash=${decodeHashFromBase64(params.happHash!)}
+							@new-happ-version-selected=${(e: CustomEvent) =>
+								this.router.goto(`/happ/${params.happHash}/new-version`)}
+							@happ-version-selected=${(e: CustomEvent) =>
+								this.router.goto(
+									`/happ/${params.happHash}/version/${encodeHashToBase64(e.detail.happVersionHash)}`,
+								)}
+						>
+						</happ-detail>
+					</overlay-page>
+				`;
+			},
+		},
+		{
+			path: '/happ/:happHash/new-version',
+			render: params =>
+				html` <overlay-page
+					.title=${msg('New Version')}
+					@close-requested=${() => this.router.goto(`/happ/${params.happHash}`)}
+				>
+					<create-happ-version
+						style="width: 600px"
+						.happHash=${decodeHashFromBase64(params.happHash!)}
+						@happ-version-created=${(e: CustomEvent) =>
+							this.router.goto(
+								`/happ/${params.happHash}/version/${encodeHashToBase64(e.detail.happVersionHash)}`,
+							)}
+					></create-happ-version>
+				</overlay-page>`,
+		},
+		{
+			path: '/happ/:happHash/version/:happVersionHash',
+			render: params =>
+				html` <overlay-page
+					icon="back"
+					.title=${msg('Version')}
+					@close-requested=${() => this.router.goto(`/happ/${params.happHash}`)}
+				>
+					<happ-version-detail
+						style="width: 600px"
+						.happVersionHash=${decodeHashFromBase64(params.happVersionHash!)}
+					></happ-version-detail>
+				</overlay-page>`,
 		},
 		{
 			path: '/my-profile',
@@ -93,6 +172,11 @@ export class HolochainApp extends SignalWatcher(LitElement) {
 				</sl-card>
 			</div>
 		`;
+	}
+
+	get happStore() {
+		const c = this.shadowRoot?.querySelector('happs-context') as HappsContext;
+		return c.store;
 	}
 
 	render() {

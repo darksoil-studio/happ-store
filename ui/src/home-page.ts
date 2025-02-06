@@ -20,10 +20,6 @@ export class HomePage extends SignalWatcher(LitElement) {
 	@consume({ context: rootRouterContext })
 	router!: Router;
 
-	renderContent() {
-		return html``;
-	}
-
 	render() {
 		return html`
 			<div class="column" style="flex: 1">
@@ -33,7 +29,7 @@ export class HomePage extends SignalWatcher(LitElement) {
 					<div class="row" style="gap: 16px">
 						<sl-button
 							variant="primary"
-							@click=${() => this.router.goto('/publisher-dashboard/')}
+							@click=${() => this.router.goto('/publisher-dashboard')}
 							>${msg('Publisher Dashboard')}
 						</sl-button>
 					</div>

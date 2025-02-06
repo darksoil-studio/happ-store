@@ -56,42 +56,6 @@ export class HappDetail extends SignalWatcher(LitElement) {
 	@consume({ context: happsStoreContext, subscribe: true })
 	happsStore!: HappsStore;
 
-	routes = new Routes(this, [
-		{
-			path: '',
-			render: () => this.renderHappDetail(),
-		},
-		{
-			path: 'new-version',
-			render: () =>
-				html` <overlay-page
-					.title=${msg('New Version')}
-					@close-requested=${() => this.routes.goto('')}
-				>
-					<create-happ-version
-						style="width: 600px"
-						.happHash=${this.happHash}
-						@happ-version-created=${() => this.routes.goto('')}
-					></create-happ-version>
-				</overlay-page>`,
-		},
-		{
-			path: 'version/:happVersionHash',
-			render: params =>
-				html` <overlay-page
-					icon="back"
-					.title=${msg('Version')}
-					@close-requested=${() => this.routes.goto('')}
-				>
-					<happ-version-detail
-						style="width: 600px"
-						.happVersionHash=${decodeHashFromBase64(params.happVersionHash!)}
-						@happ-version-created=${() => this.routes.goto('')}
-					></happ-version-detail>
-				</overlay-page>`,
-		},
-	]);
-
 	/**
 	 * @internal
 	 */
@@ -150,27 +114,27 @@ export class HappDetail extends SignalWatcher(LitElement) {
 						<div style="flex: 1"></div>
 						<sl-button
 							variant="primary"
-							@click=${() => this.routes.goto('new-version')}
+							@click=${() =>
+								this.dispatchEvent(
+									new CustomEvent('new-happ-version-selected', {
+										bubbles: true,
+										composed: true,
+									}),
+								)}
 							>${msg('New Version')}</sl-button
 						>
 					</div>
 
 					<sl-divider> </sl-divider>
 
-					<happ-versions-for-happ
-						.happHash=${this.happHash}
-						@happ-version-selected=${(e: CustomEvent) =>
-							this.routes.goto(
-								`version/${encodeHashToBase64(e.detail.happVersionHash)}`,
-							)}
-					>
+					<happ-versions-for-happ .happHash=${this.happHash}>
 					</happ-versions-for-happ>
 				</div>
 			</div>
 		`;
 	}
 
-	renderHappDetail() {
+	render() {
 		const happ = this.happsStore.happs.get(this.happHash).latestVersion.get();
 
 		switch (happ.status) {
@@ -201,10 +165,6 @@ export class HappDetail extends SignalWatcher(LitElement) {
 
 				return this.renderDetail(happ.value);
 		}
-	}
-
-	render() {
-		return this.routes.outlet();
 	}
 
 	static styles = appStyles;

@@ -43,12 +43,15 @@ export class PublisherHapps extends SignalWatcher(LitElement) {
 
 	renderList(hashes: Array<ActionHash>) {
 		if (hashes.length === 0) {
-			return html` <div class="column center-content" style="gap: 16px;">
+			return html` <div
+				class="column center-content"
+				style="gap: 16px; flex: 1"
+			>
 				<sl-icon
 					.src=${wrapPathInSvg(mdiInformationOutline)}
 					style="color: grey; height: 64px; width: 64px;"
 				></sl-icon>
-				<span class="placeholder">${msg('No happs found')}</span>
+				<span class="placeholder">${msg('No hApps found.')}</span>
 			</div>`;
 		}
 
