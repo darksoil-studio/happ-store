@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "start": "vite --port $UI_PORT --clearScreen false",
-    "build": "vite build",
+    "build": "pnpm -F @darksoil-studio/happs-zome build && vite build",
     "lint": "eslint src && prettier \"**/*.ts\" --check --ignore-path .gitignore",
     "format": "eslint src && prettier \"**/*.ts\" --write --ignore-path .gitignore",
     "package": "pnpm build && cd dist && bestzip ../dist.zip *",
@@ -12,6 +12,7 @@
     "localize:build": "lit-localize build"
   },
   "dependencies": {
+    "@darksoil-studio/happs-zome": "workspace:^0.400.0",
     "@darksoil-studio/file-storage-zome": "0.400.0-rev.d4819e883590e7f23589a2f137512910209ff424",
     "@holochain/client": "^0.18.0",
     "@tnesh-stack/elements": "^0.400.0",

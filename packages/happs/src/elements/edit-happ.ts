@@ -16,6 +16,7 @@ import {
 	hashState,
 	notifyError,
 	onSubmit,
+	sharedStyles,
 	wrapPathInSvg,
 } from '@tnesh-stack/elements';
 import { SignalWatcher, toPromise } from '@tnesh-stack/signals';
@@ -24,7 +25,6 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';
 
-import { appStyles } from '../../../app-styles.js';
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
 import { Happ } from '../types.js';
@@ -171,5 +171,5 @@ export class EditHapp extends SignalWatcher(LitElement) {
 		}
 	}
 
-	static styles = appStyles;
+	static styles = sharedStyles;
 }

@@ -22,6 +22,7 @@ import {
 	hashState,
 	notifyError,
 	onSubmit,
+	sharedStyles,
 	wrapPathInSvg,
 } from '@tnesh-stack/elements';
 import '@tnesh-stack/elements/dist/elements/display-error.js';
@@ -29,26 +30,18 @@ import { SignalWatcher } from '@tnesh-stack/signals';
 import { EntryRecord } from '@tnesh-stack/utils';
 import { LitElement, html } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
-import { repeat } from 'lit/directives/repeat.js';
 
-import { appStyles } from '../../../app-styles.js';
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
-import { HappVersion } from '../types.js';
+import { Happ } from '../types.js';
 
 /**
- * @element create-happ-version
- * @fires happ-version-created: detail will contain { happVersionHash }
+ * @element create-happ
+ * @fires happ-created: detail will contain { happHash }
  */
 @localized()
-@customElement('create-happ-version')
-export class CreateHappVersion extends SignalWatcher(LitElement) {
-	/**
-	 * REQUIRED. The happ hash for this HappVersion
-	 */
-	@property(hashProperty('happ-hash'))
-	happHash!: ActionHash;
-
+@customElement('create-happ')
+export class CreateHapp extends SignalWatcher(LitElement) {
 	/**
 	 * @internal
 	 */
@@ -67,30 +60,24 @@ export class CreateHappVersion extends SignalWatcher(LitElement) {
 	@query('#create-form')
 	form!: HTMLFormElement;
 
-	async createHappVersion(fields: Partial<HappVersion>) {
-		if (this.happHash === undefined)
-			throw new Error(
-				'Cannot create a new Happ Version without its happ_hash field',
-			);
-
-		const happVersion: HappVersion = {
-			happ_hash: this.happHash!,
-			version: fields.version!,
-			changes: fields.changes!,
-			web_happ_bundle_hash: fields.web_happ_bundle_hash!,
+	async createHapp(fields: Partial<Happ>) {
+		const happ: Happ = {
+			name: fields.name!,
+			description: fields.description!,
+			icon: fields.icon!,
 		};
 
 		try {
 			this.committing = true;
-			const record: EntryRecord<HappVersion> =
-				await this.happsStore.client.createHappVersion(happVersion);
+			const record: EntryRecord<Happ> =
+				await this.happsStore.client.createHapp(happ);
 
 			this.dispatchEvent(
-				new CustomEvent('happ-version-created', {
+				new CustomEvent('happ-created', {
 					composed: true,
 					bubbles: true,
 					detail: {
-						happVersionHash: record.actionHash,
+						happHash: record.actionHash,
 					},
 				}),
 			);
@@ -98,7 +85,7 @@ export class CreateHappVersion extends SignalWatcher(LitElement) {
 			this.form.reset();
 		} catch (e: unknown) {
 			console.error(e);
-			notifyError(msg('Error creating the happ version'));
+			notifyError(msg('Error creating the happ'));
 		}
 		this.committing = false;
 	}
@@ -109,27 +96,31 @@ export class CreateHappVersion extends SignalWatcher(LitElement) {
 				id="create-form"
 				class="column"
 				style="flex: 1; gap: 16px;"
-				${onSubmit(fields => this.createHappVersion(fields))}
+				${onSubmit(fields => this.createHapp(fields))}
 			>
-				<upload-files
-					name="web_happ_bundle_hash"
-					one-file
-					accepted-files=".webhapp"
-					required
-				></upload-files>
-				<sl-input name="version" .label=${msg('Version')} required></sl-input>
+				<div class="column" style="gap: 8px">
+					<span>${msg('Icon')}*</span>
+					<upload-files
+						label="hey"
+						name="icon"
+						one-file
+						accepted-files="image/jpeg,image/png,image/gif"
+						required
+					></upload-files>
+				</div>
+				<sl-input name="name" .label=${msg('Name')} required></sl-input>
 				<sl-textarea
-					name="changes"
-					.label=${msg('Changes')}
+					name="description"
+					.label=${msg('Description')}
 					required
 				></sl-textarea>
 
 				<sl-button variant="primary" type="submit" .loading=${this.committing}
-					>${msg('Create Happ Version')}</sl-button
+					>${msg('Create Happ')}</sl-button
 				>
 			</form>
 		</sl-card>`;
 	}
 
-	static styles = appStyles;
+	static styles = sharedStyles;
 }

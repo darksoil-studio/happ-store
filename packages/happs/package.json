@@ -1,0 +1,58 @@
+{
+  "name": "@darksoil-studio/happs-zome",
+  "version": "0.400.0",
+  "author": "guillem.cordoba@gmail.com",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darksoil-studio/profiles-zome.git"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./locales/*": "./locales/*",
+    "./dist/*": "./dist/*"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "src",
+    "locales"
+  ],
+  "scripts": {
+    "start": "vite --clearScreen false --port $UI_PORT",
+    "build": "tsc && pnpm localize:build",
+    "lint": "eslint src",
+    "analyze": "cem analyze --litelement --exclude dist",
+    "format": "eslint src --fix",
+    "localize:extract": "lit-localize extract",
+    "localize:build": "lit-localize build",
+    "prepare": "pnpm build"
+  },
+  "dependencies": {
+    "@darksoil-studio/file-storage-zome": "0.400.0-rev.d4819e883590e7f23589a2f137512910209ff424",
+    "@tnesh-stack/elements": "^0.400.0",
+    "@tnesh-stack/signals": "^0.400.0",
+    "@tnesh-stack/utils": "^0.400.0",
+    "@holochain/client": "^0.18.0",
+    "@lit/context": "^1.0.1",
+    "@lit/localize": "^0.12.0",
+    "@mdi/js": "^7.1.96",
+    "@msgpack/msgpack": "^2.7.0",
+    "@shoelace-style/shoelace": "^2.11.0",
+    "lit": "^3.0.2"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.10.3",
+    "@lit/localize-tools": "^0.6.3",
+    "tslib": "^2.0.0",
+    "typescript": "^5.4.0",
+    "vite": "^4.0.4",
+    "vite-plugin-checker": "^0.5.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "customElements": "custom-elements.json",
+  "type": "module"
+}

@@ -4,29 +4,45 @@ import { localized, msg } from '@lit/localize';
 import { mdiInformationOutline } from '@mdi/js';
 import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@shoelace-style/shoelace/dist/components/spinner/spinner.js';
-import { hashProperty, wrapPathInSvg } from '@tnesh-stack/elements';
+import {
+	hashProperty,
+	sharedStyles,
+	wrapPathInSvg,
+} from '@tnesh-stack/elements';
 import '@tnesh-stack/elements/dist/elements/display-error.js';
-import { SignalWatcher, joinAsyncMap } from '@tnesh-stack/signals';
-import { mapValues, pickBy } from '@tnesh-stack/utils';
+import { SignalWatcher } from '@tnesh-stack/signals';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { appStyles } from '../../../app-styles.js';
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
 import './happ-summary.js';
 
 /**
- * @element all-happs
+ * @element publisher-happs
  */
 @localized()
-@customElement('all-happs')
-export class AllHapps extends SignalWatcher(LitElement) {
+@customElement('publisher-happs')
+export class PublisherHapps extends SignalWatcher(LitElement) {
+	/**
+	 * REQUIRED. The author for which the Happs should be fetched
+	 */
+	@property(hashProperty('author'))
+	author!: AgentPubKey;
+
 	/**
 	 * @internal
 	 */
 	@consume({ context: happsStoreContext, subscribe: true })
 	happsStore!: HappsStore;
+
+	firstUpdated() {
+		if (this.author === undefined) {
+			throw new Error(
+				`The author property is required for the PublisherHapps element`,
+			);
+		}
+	}
 
 	renderList(hashes: Array<ActionHash>) {
 		if (hashes.length === 0) {
@@ -51,28 +67,8 @@ export class AllHapps extends SignalWatcher(LitElement) {
 		`;
 	}
 
-	happsWithVersions() {
-		const allHapps = this.happsStore.allHapps.get();
-		if (allHapps.status !== 'completed') return allHapps;
-
-		const happsVersions = joinAsyncMap(
-			mapValues(allHapps.value, happ => happ.happVersions.get()),
-		);
-		if (happsVersions.status !== 'completed') return happsVersions;
-
-		const happsWithVersions = pickBy(
-			happsVersions.value,
-			versions => versions.size > 0,
-		);
-
-		return {
-			status: 'completed' as const,
-			value: happsWithVersions,
-		};
-	}
-
 	render() {
-		const map = this.happsWithVersions();
+		const map = this.happsStore.publisherHapps.get(this.author).get();
 
 		switch (map.status) {
 			case 'pending':
@@ -92,7 +88,7 @@ export class AllHapps extends SignalWatcher(LitElement) {
 	}
 
 	static styles = [
-		appStyles,
+		sharedStyles,
 		css`
 			:host {
 				display: flex;

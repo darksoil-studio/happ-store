@@ -1,3 +1,7 @@
+import { HappsStore, happsStoreContext } from '@darksoil-studio/happs-zome';
+import '@darksoil-studio/happs-zome/dist/elements/create-happ.js';
+import '@darksoil-studio/happs-zome/dist/elements/happ-detail.js';
+import '@darksoil-studio/happs-zome/dist/elements/publisher-happs.js';
 import {
 	AppClient,
 	decodeHashFromBase64,
@@ -19,11 +23,6 @@ import { customElement, property } from 'lit/decorators.js';
 
 import { appStyles } from './app-styles.js';
 import { rootRouterContext } from './context.js';
-import { happsStoreContext } from './main/happs/context.js';
-import './main/happs/elements/create-happ.js';
-import './main/happs/elements/happ-detail.js';
-import './main/happs/elements/publisher-happs.js';
-import { HappsStore } from './main/happs/happs-store.js';
 import './overlay-page.js';
 
 @customElement('publisher-dashboard')

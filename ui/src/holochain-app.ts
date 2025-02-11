@@ -1,4 +1,6 @@
 import '@darksoil-studio/file-storage-zome/dist/elements/file-storage-context.js';
+import { HappsContext } from '@darksoil-studio/happs-zome/dist/elements/happs-context.js';
+import '@darksoil-studio/happs-zome/dist/elements/happs-context.js';
 import {
 	ActionHash,
 	AdminWebsocket,
@@ -23,8 +25,6 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { appStyles } from './app-styles.js';
 import { adminWebsocketContext, rootRouterContext } from './context.js';
 import './home-page.js';
-import './main/happs/elements/happs-context.js';
-import { HappsContext } from './main/happs/elements/happs-context.js';
 import './publisher-dashboard.js';
 
 @localized()

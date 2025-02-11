@@ -20,6 +20,7 @@ import {
 	Routes,
 	hashProperty,
 	notifyError,
+	sharedStyles,
 	wrapPathInSvg,
 } from '@tnesh-stack/elements';
 import '@tnesh-stack/elements/dist/elements/display-error.js';
@@ -28,7 +29,6 @@ import { EntryRecord } from '@tnesh-stack/utils';
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { appStyles } from '../../../app-styles.js';
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
 import { Happ } from '../types.js';
@@ -167,5 +167,5 @@ export class HappDetail extends SignalWatcher(LitElement) {
 		}
 	}
 
-	static styles = appStyles;
+	static styles = sharedStyles;
 }

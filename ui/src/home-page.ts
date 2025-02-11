@@ -1,3 +1,4 @@
+import '@darksoil-studio/happs-zome/dist/elements/all-happs.js';
 import { AppClient } from '@holochain/client';
 import { consume } from '@lit/context';
 import { msg } from '@lit/localize';
@@ -10,7 +11,6 @@ import { customElement } from 'lit/decorators.js';
 
 import { appStyles } from './app-styles.js';
 import { rootRouterContext } from './context.js';
-import './main/happs/elements/all-happs.js';
 
 @customElement('home-page')
 export class HomePage extends SignalWatcher(LitElement) {
