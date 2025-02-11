@@ -2,7 +2,6 @@
   description = "Template for Holochain app development";
 
   inputs = {
-    file-storage.url = "github:darksoil-studio/file-storage/main-0.4";
     holonix.url = "github:holochain/holonix/main-0.4";
 
     nixpkgs.follows = "holonix/nixpkgs";
@@ -10,8 +9,8 @@
 
     tnesh-stack.url = "github:darksoil-studio/tnesh-stack/main-0.4";
     playground.url = "github:darksoil-studio/holochain-playground/main-0.4";
-    # p2p-shipyard.url = "github:darksoil-studio/p2p-shipyard/main-0.4";
-    p2p-shipyard.url = "/home/guillem/projects/darksoil/p2p-shipyard";
+    p2p-shipyard.url = "github:darksoil-studio/p2p-shipyard/main-0.4";
+    file-storage.url = "github:darksoil-studio/file-storage/main-0.4";
     aon.url = "github:darksoil-studio/always-online-nodes";
   };
 

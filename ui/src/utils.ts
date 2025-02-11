@@ -6,7 +6,6 @@ export async function triggerFileDownload(
 	client: FileStorageClient,
 ) {
 	const file = await client.downloadFile(fileHash);
-	console.log(file);
 
 	const link = document.createElement('a');
 	link.href = window.URL.createObjectURL(file);
