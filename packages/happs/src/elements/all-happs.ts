@@ -17,7 +17,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
-import './happ-summary.js';
+import './manage-happ.js';
 
 /**
  * @element all-happs
@@ -35,7 +35,7 @@ export class AllHapps extends SignalWatcher(LitElement) {
 		if (hashes.length === 0) {
 			return html` <div
 				class="column center-content"
-				style="gap: 16px; flex: 1"
+				style="gap: 16px; flex: 1;"
 			>
 				<sl-icon
 					.src=${wrapPathInSvg(mdiInformationOutline)}
@@ -48,7 +48,7 @@ export class AllHapps extends SignalWatcher(LitElement) {
 		return html`
 			<div class="row" style="gap: 16px; flex: 1; flex-wrap: wrap">
 				${hashes.map(
-					hash => html`<happ-summary .happHash=${hash}></happ-summary>`,
+					hash => html`<manage-happ .happHash=${hash}></manage-happ>`,
 				)}
 			</div>
 		`;

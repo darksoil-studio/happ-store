@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start": "AGENTS=2 pnpm network",
-    "network": "pnpm build:happ && UI_PORT=1420 concurrently -k \"pnpm -F ui start\" \"pnpm launch\" \"hc playground\" \"pnpm file-storage-provider\"",
+    "network": "pnpm build:happ && UI_PORT=1420 concurrently -k \"pnpm -F ./packages/* build:watch\" \"pnpm -F ui start\" \"pnpm launch\" \"hc playground\" \"pnpm file-storage-provider\"",
     "launch": "concurrently-repeat \"hc pilot workdir/happ-store.happ --ui-port $UI_PORT\" $AGENTS",
     "file-storage-provider": "rimraf /tmp/fsp && mkdir /tmp/fsp && nix run .#file_storage_provider_aon_debug -- --lan-only --data-dir /tmp/fsp",
     "test": "pnpm build:happ && pnpm -F tests test",

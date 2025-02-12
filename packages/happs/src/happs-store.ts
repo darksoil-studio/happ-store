@@ -1,32 +1,16 @@
+import { ActionHash, AgentPubKey } from '@holochain/client';
 import {
-	ActionHash,
-	AgentPubKey,
-	EntryHash,
-	NewEntryAction,
-	Record,
-} from '@holochain/client';
-import {
-	AsyncComputed,
 	allRevisionsOfEntrySignal,
 	collectionSignal,
-	deletedLinksSignal,
 	deletesForEntrySignal,
 	immutableEntrySignal,
 	latestVersionOfEntrySignal,
 	liveLinksSignal,
 	pipe,
 } from '@tnesh-stack/signals';
-import {
-	EntryRecord,
-	HashType,
-	MemoHoloHashMap,
-	retype,
-	slice,
-} from '@tnesh-stack/utils';
+import { MemoHoloHashMap, slice } from '@tnesh-stack/utils';
 
 import { HappsClient } from './happs-client.js';
-import { HappVersion } from './types.js';
-import { Happ } from './types.js';
 
 export class HappsStore {
 	constructor(public client: HappsClient) {}

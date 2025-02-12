@@ -1,5 +1,10 @@
 import { FileStorageClient } from '@darksoil-studio/file-storage-zome';
 import { EntryHash } from '@holochain/client';
+import { decode } from '@msgpack/msgpack';
+import { AsyncSignal, AsyncState, Signal } from '@tnesh-stack/signals';
+import { gunzipSync } from 'fflate';
+
+import { listApps } from './commands';
 
 export async function triggerFileDownload(
 	fileHash: EntryHash,
@@ -13,3 +18,64 @@ export async function triggerFileDownload(
 	link.download = fileName;
 	link.click();
 }
+
+export async function decodeBundle<T>(file: File): Promise<T> {
+	const bytes = await file.bytes();
+	const expanded = gunzipSync(bytes);
+	return decode(expanded) as T;
+}
+
+export function fromPromiseWithReload<T>(task: () => Promise<T>): {
+	signal: AsyncSignal<T>;
+	reload: () => void;
+} {
+	const signal = new AsyncState<T>(
+		{ status: 'pending' },
+		{
+			[Signal.subtle.watched]: () => {
+				task()
+					.then(value => {
+						signal.set({
+							status: 'completed',
+							value,
+						});
+					})
+					.catch(error => {
+						signal.set({
+							status: 'error',
+							error,
+						});
+					});
+			},
+			[Signal.subtle.unwatched]: () => {
+				// We revert back to pending state so that the next time this signal is queried,
+				// the backend request is sent again
+				setTimeout(() => {
+					signal.set({
+						status: 'pending',
+					});
+				});
+			},
+		},
+	);
+	return {
+		signal,
+		reload: () => {
+			task()
+				.then(value => {
+					signal.set({
+						status: 'completed',
+						value,
+					});
+				})
+				.catch(error => {
+					signal.set({
+						status: 'error',
+						error,
+					});
+				});
+		},
+	};
+}
+
+export const installedApps = fromPromiseWithReload(() => listApps());

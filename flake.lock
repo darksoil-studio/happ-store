@@ -4398,18 +4398,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1739284150,
-        "narHash": "sha256-d81dcPQT9ezl/LFuwCShRjm/WRsbnEjyA8vrnd5czTQ=",
-        "owner": "darksoil-studio",
-        "repo": "tnesh-stack",
-        "rev": "a2b718a5a510e35781cd611faea2a65b9c9c2004",
-        "type": "github"
+        "lastModified": 1739288942,
+        "narHash": "sha256-UOK+Pdns/srf8wyQ/vQIKz1qRG9E/otWENK2hKjb4XQ=",
+        "ref": "refs/heads/main-0.4",
+        "rev": "a64831141ec8e46e881fbee25cdffbb381aa8767",
+        "revCount": 170,
+        "type": "git",
+        "url": "file:///home/guillem/projects/darksoil/tnesh-stack"
       },
       "original": {
-        "owner": "darksoil-studio",
-        "ref": "main-0.4",
-        "repo": "tnesh-stack",
-        "type": "github"
+        "type": "git",
+        "url": "file:///home/guillem/projects/darksoil/tnesh-stack"
       }
     }
   },
