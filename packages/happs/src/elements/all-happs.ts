@@ -4,11 +4,7 @@ import { localized, msg } from '@lit/localize';
 import { mdiInformationOutline } from '@mdi/js';
 import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@shoelace-style/shoelace/dist/components/spinner/spinner.js';
-import {
-	hashProperty,
-	sharedStyles,
-	wrapPathInSvg,
-} from '@tnesh-stack/elements';
+import { wrapPathInSvg } from '@tnesh-stack/elements';
 import '@tnesh-stack/elements/dist/elements/display-error.js';
 import { SignalWatcher, joinAsyncMap } from '@tnesh-stack/signals';
 import { mapValues, pickBy } from '@tnesh-stack/utils';
@@ -17,6 +13,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
+import { happsStyles } from '../styles.js';
 import './manage-happ.js';
 
 /**
@@ -46,10 +43,23 @@ export class AllHapps extends SignalWatcher(LitElement) {
 		}
 
 		return html`
-			<div class="row" style="gap: 16px; flex: 1; flex-wrap: wrap">
-				${hashes.map(
-					hash => html`<manage-happ .happHash=${hash}></manage-happ>`,
-				)}
+			<div class="flex-scrollable-parent">
+				<div class="flex-scrollable-container">
+					<div class="flex-scrollable-y">
+						<div
+							class="row"
+							style="margin: 16px; gap: 16px; flex: 1; flex-wrap: wrap"
+						>
+							${hashes.map(
+								hash =>
+									html`<manage-happ
+										style="height: 200px; width: 300px"
+										.happHash=${hash}
+									></manage-happ>`,
+							)}
+						</div>
+					</div>
+				</div>
 			</div>
 		`;
 	}
@@ -95,7 +105,7 @@ export class AllHapps extends SignalWatcher(LitElement) {
 	}
 
 	static styles = [
-		sharedStyles,
+		happsStyles,
 		css`
 			:host {
 				display: flex;

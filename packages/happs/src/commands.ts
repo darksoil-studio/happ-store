@@ -41,3 +41,9 @@ export async function installWebHapp(
 		networkSeed: networkSeed,
 	});
 }
+
+export async function uninstallWebHapp(appId: InstalledAppId) {
+	return invoke('plugin:holochain|uninstall_web_app', {
+		appId,
+	});
+}

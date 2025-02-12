@@ -45,9 +45,7 @@ export class PublisherDashboard extends SignalWatcher(LitElement) {
 						@click=${() => this.router.goto('/')}
 						.src=${wrapPathInSvg(mdiArrowLeft)}
 					></sl-icon-button>
-					<span class="title" style="flex: 1"
-						>${msg('Publisher Dashboard')}</span
-					>
+					<span class="title" style="flex: 1">${msg('Your hApps')}</span>
 
 					<div class="row" style="gap: 16px">
 						<sl-button
@@ -64,16 +62,10 @@ export class PublisherDashboard extends SignalWatcher(LitElement) {
 					</div>
 				</div>
 
-				<div class="flex-scrollable-parent">
-					<div class="flex-scrollable-container">
-						<div class="flex-scrollable-y">
-							<publisher-happs
-								style="margin: 16px"
-								.author=${this.client.myPubKey}
-							></publisher-happs>
-						</div>
-					</div>
-				</div>
+				<publisher-happs
+					style="flex: 1"
+					.author=${this.client.myPubKey}
+				></publisher-happs>
 			</div>
 		`;
 	}

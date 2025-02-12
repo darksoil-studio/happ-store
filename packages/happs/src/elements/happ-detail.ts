@@ -31,6 +31,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
+import { happsStyles } from '../styles.js';
 import { Happ } from '../types.js';
 import './create-happ-version.js';
 import './edit-happ.js';
@@ -85,26 +86,26 @@ export class HappDetail extends SignalWatcher(LitElement) {
 		return html`
 			<div class="column" style="gap: 32px;">
 				<sl-card>
-					<div class="row" style="gap: 16px; flex: 1">
-						<show-image
-							.imageHash=${entryRecord.entry.icon}
-							style="width: 64px; height: 64px"
-						></show-image>
-
-						<div class="column" style="gap: 16px; flex: 1">
-							<span class="title">${entryRecord.entry.name}</span>
-
-							<span style="white-space: pre-line"
-								>${entryRecord.entry.description}</span
-							>
+					<div class="column" style="gap: 16px; flex: 1">
+						<div class="row" style="gap: 16px; flex: 1">
+							<show-image
+								.imageHash=${entryRecord.entry.icon}
+								style="width: 64px; height: 64px"
+							></show-image>
+							<span style="flex: 1"></span>
+							<sl-icon-button
+								.src=${wrapPathInSvg(mdiPencil)}
+								@click=${() => {
+									this._editing = true;
+								}}
+							></sl-icon-button>
 						</div>
 
-						<sl-icon-button
-							.src=${wrapPathInSvg(mdiPencil)}
-							@click=${() => {
-								this._editing = true;
-							}}
-						></sl-icon-button>
+						<span class="title">${entryRecord.entry.name}</span>
+
+						<span style="white-space: pre-line"
+							>${entryRecord.entry.description}</span
+						>
 					</div>
 				</sl-card>
 
@@ -167,5 +168,5 @@ export class HappDetail extends SignalWatcher(LitElement) {
 		}
 	}
 
-	static styles = sharedStyles;
+	static styles = happsStyles;
 }

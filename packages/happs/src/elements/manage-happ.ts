@@ -11,11 +11,21 @@ import {
 } from '@holochain/client';
 import { consume } from '@lit/context';
 import { localized, msg } from '@lit/localize';
+import { mdiDelete, mdiDownload, mdiOpenInNew } from '@mdi/js';
 import { isAsyncIterable } from '@msgpack/msgpack/dist/utils/stream.js';
 import { SlButton } from '@shoelace-style/shoelace';
+import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@shoelace-style/shoelace/dist/components/card/card.js';
+import '@shoelace-style/shoelace/dist/components/dialog/dialog.js';
+import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@shoelace-style/shoelace/dist/components/spinner/spinner.js';
-import { hashProperty, notifyError, sharedStyles } from '@tnesh-stack/elements';
+import {
+	hashProperty,
+	notify,
+	notifyError,
+	sharedStyles,
+	wrapPathInSvg,
+} from '@tnesh-stack/elements';
 import '@tnesh-stack/elements/dist/elements/display-error.js';
 import {
 	SignalWatcher,
@@ -24,12 +34,18 @@ import {
 	joinAsyncMap,
 } from '@tnesh-stack/signals';
 import { EntryRecord, mapValues } from '@tnesh-stack/utils';
-import { LitElement, html } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-import { WebAppBundle, installWebHapp, openHapp } from '../commands.js';
+import {
+	WebAppBundle,
+	installWebHapp,
+	openHapp,
+	uninstallWebHapp,
+} from '../commands.js';
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
+import { happsStyles } from '../styles.js';
 import { Happ, HappVersion } from '../types.js';
 import { decodeBundle, installedApps } from '../utils.js';
 
@@ -109,8 +125,20 @@ export class ManageHapp extends SignalWatcher(LitElement) {
 				undefined,
 			);
 			installedApps.reload();
+			notify(msg('hApp installed successfully.'));
 		} catch (e) {
 			notifyError(msg('Error installing the hApp'));
+			console.error(e);
+		}
+	}
+
+	async uninstall(happVersionHash: ActionHash) {
+		try {
+			await uninstallWebHapp(encodeHashToBase64(happVersionHash));
+			installedApps.reload();
+			notify(msg('hApp uninstalled successfully.'));
+		} catch (e) {
+			notifyError(msg('Error uninstalling the hApp'));
 			console.error(e);
 		}
 	}
@@ -131,12 +159,47 @@ export class ManageHapp extends SignalWatcher(LitElement) {
 	) {
 		if (isInstalled)
 			return html`
-				<sl-button
-					variant="success"
-					outlined
-					@click=${() => this.open(happ, latestVersion[0])}
-					>${msg('Open')}
-				</sl-button>
+				<div class="row" style="gap: 8px">
+					<sl-button
+						@click=${() => this.open(happ, latestVersion[0])}
+						circle
+						outline
+					>
+						<sl-icon .src=${wrapPathInSvg(mdiOpenInNew)}></sl-icon>
+					</sl-button>
+					<sl-dialog .label=${msg('Uninstall hApp')}>
+						<span>${msg('Are you sure you want to uninstall this app?')} </span>
+						<sl-button
+							slot="footer"
+							@click=${() => {
+								this.shadowRoot?.querySelector('sl-dialog')!.hide();
+							}}
+							>${msg('Cancel')}
+						</sl-button>
+						<sl-button
+							slot="footer"
+							variant="danger"
+							@click=${(e: CustomEvent) => {
+								const button = e.target as SlButton;
+								button.loading = true;
+								this.uninstall(latestVersion[0]).finally(
+									() => (button.loading = false),
+								);
+							}}
+							>${msg('Uninstall')}
+						</sl-button>
+					</sl-dialog>
+					<sl-button
+						@click=${() => {
+							this.shadowRoot?.querySelector('sl-dialog')!.show();
+						}}
+						circle
+						outline
+						variant="danger"
+					>
+						<sl-icon .src=${wrapPathInSvg(mdiDelete)}></sl-icon>
+					</sl-button>
+				</div>
 			`;
 		return html`
 			<sl-button
@@ -149,7 +212,10 @@ export class ManageHapp extends SignalWatcher(LitElement) {
 						button.loading = false;
 					});
 				}}
-				>${msg('Install')}
+			>
+				<sl-icon slot="prefix" .src=${wrapPathInSvg(mdiDownload)}> </sl-icon>
+
+				${msg('Install')}
 			</sl-button>
 		`;
 	}
@@ -160,7 +226,7 @@ export class ManageHapp extends SignalWatcher(LitElement) {
 		isInstalled: boolean,
 	) {
 		return html`
-			<div class="column" style="gap: 16px;">
+			<div class="column" style="gap: 16px; flex: 1">
 				<div class="row" style="gap: 16px;">
 					<show-image
 						.imageHash=${happ.entry.icon}
@@ -173,7 +239,11 @@ export class ManageHapp extends SignalWatcher(LitElement) {
 				<div class="column" style="gap: 8px;">
 					<span>${happ.entry.name}</span>
 
-					<span class="placeholder">${happ.entry.description}</span>
+					<span
+						class="placeholder"
+						style="text-overflow: ellipsis; height: 56px; overflow: hidden"
+						>${happ.entry.description}</span
+					>
 				</div>
 			</div>
 		`;
@@ -224,5 +294,12 @@ export class ManageHapp extends SignalWatcher(LitElement) {
 		</sl-card>`;
 	}
 
-	static styles = sharedStyles;
+	static styles = [
+		happsStyles,
+		css`
+			:host {
+				display: flex;
+			}
+		`,
+	];
 }

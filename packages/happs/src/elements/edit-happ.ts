@@ -27,6 +27,7 @@ import { repeat } from 'lit/directives/repeat.js';
 
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
+import { happsStyles } from '../styles.js';
 import { Happ } from '../types.js';
 
 /**
@@ -99,14 +100,13 @@ export class EditHapp extends SignalWatcher(LitElement) {
 
 	renderEditForm(currentRecord: EntryRecord<Happ>) {
 		return html` <sl-card style="flex: 1">
-			<span slot="header">${msg('Edit Happ')}</span>
-
 			<form
 				id="form"
 				class="column"
 				style="flex: 1; gap: 16px;"
 				${onSubmit(fields => this.updateHapp(currentRecord, fields))}
 			>
+				<span class="title">${msg('Edit Happ')}</span>
 				<sl-input
 					name="name"
 					.label=${msg('Name')}
@@ -171,5 +171,5 @@ export class EditHapp extends SignalWatcher(LitElement) {
 		}
 	}
 
-	static styles = sharedStyles;
+	static styles = happsStyles;
 }

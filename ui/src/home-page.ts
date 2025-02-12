@@ -35,13 +35,7 @@ export class HomePage extends SignalWatcher(LitElement) {
 					</div>
 				</div>
 
-				<div class="flex-scrollable-parent">
-					<div class="flex-scrollable-container">
-						<div class="flex-scrollable-y">
-							<all-happs style="margin: 16px"> </all-happs>
-						</div>
-					</div>
-				</div>
+				<all-happs style="flex: 1"> </all-happs>
 			</div>
 		`;
 	}

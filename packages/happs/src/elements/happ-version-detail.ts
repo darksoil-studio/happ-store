@@ -32,6 +32,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
+import { happsStyles } from '../styles.js';
 import { HappVersion } from '../types.js';
 import { triggerFileDownload } from '../utils.js';
 import './edit-happ-version.js';
@@ -155,5 +156,5 @@ export class HappVersionDetail extends SignalWatcher(LitElement) {
 		}
 	}
 
-	static styles = sharedStyles;
+	static styles = happsStyles;
 }

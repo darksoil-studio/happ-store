@@ -84,13 +84,15 @@ export class HolochainApp extends SignalWatcher(LitElement) {
 		{
 			path: '/happ/:happHash',
 			render: params => {
-				const title = this.happStore.happs
+				const title = this.happStore?.happs
 					.get(decodeHashFromBase64(params.happHash!))
 					.latestVersion.get();
 				return html`
 					<overlay-page
 						icon="back"
-						.title=${title.status === 'completed' ? title.value.entry.name : ''}
+						.title=${title?.status === 'completed'
+							? title?.value.entry.name
+							: ''}
 						@close-requested=${() => this.router.goto('/publisher-dashboard')}
 					>
 						<happ-detail
@@ -176,7 +178,7 @@ export class HolochainApp extends SignalWatcher(LitElement) {
 
 	get happStore() {
 		const c = this.shadowRoot?.querySelector('happs-context') as HappsContext;
-		return c.store;
+		return c?.store;
 	}
 
 	render() {

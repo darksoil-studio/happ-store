@@ -34,6 +34,7 @@ import { repeat } from 'lit/directives/repeat.js';
 
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
+import { happsStyles } from '../styles.js';
 import { HappVersion } from '../types.js';
 
 /**
@@ -131,5 +132,5 @@ export class CreateHappVersion extends SignalWatcher(LitElement) {
 		</sl-card>`;
 	}
 
-	static styles = sharedStyles;
+	static styles = happsStyles;
 }

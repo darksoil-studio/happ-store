@@ -17,6 +17,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
+import { happsStyles } from '../styles.js';
 import { HappVersion } from '../types.js';
 import './happ-version-summary.js';
 
@@ -52,7 +53,7 @@ export class HappVersionsForHapp extends SignalWatcher(LitElement) {
 		}
 
 		return html`
-			<div style="display: flex; flex-direction: column">
+			<div style="display: flex; flex-direction: column; gap: 8px">
 				${hashes.map(
 					hash =>
 						html`<happ-version-summary
@@ -83,5 +84,5 @@ export class HappVersionsForHapp extends SignalWatcher(LitElement) {
 		}
 	}
 
-	static styles = sharedStyles;
+	static styles = happsStyles;
 }

@@ -33,6 +33,7 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
+import { happsStyles } from '../styles.js';
 import { Happ } from '../types.js';
 
 /**
@@ -122,5 +123,5 @@ export class CreateHapp extends SignalWatcher(LitElement) {
 		</sl-card>`;
 	}
 
-	static styles = sharedStyles;
+	static styles = happsStyles;
 }

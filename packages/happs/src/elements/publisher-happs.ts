@@ -16,6 +16,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
+import { happsStyles } from '../styles.js';
 import './happ-summary.js';
 
 /**
@@ -59,10 +60,23 @@ export class PublisherHapps extends SignalWatcher(LitElement) {
 		}
 
 		return html`
-			<div class="row" style="gap: 16px; flex: 1; flex-wrap: wrap">
-				${hashes.map(
-					hash => html`<happ-summary .happHash=${hash}></happ-summary>`,
-				)}
+			<div class="flex-scrollable-parent">
+				<div class="flex-scrollable-container">
+					<div class="flex-scrollable-y">
+						<div
+							class="row"
+							style="margin: 16px; gap: 16px; flex: 1; flex-wrap: wrap"
+						>
+							${hashes.map(
+								hash =>
+									html`<happ-summary
+										style="height: 200px; width: 300px"
+										.happHash=${hash}
+									></happ-summary>`,
+							)}
+						</div>
+					</div>
+				</div>
 			</div>
 		`;
 	}
@@ -88,7 +102,7 @@ export class PublisherHapps extends SignalWatcher(LitElement) {
 	}
 
 	static styles = [
-		sharedStyles,
+		happsStyles,
 		css`
 			:host {
 				display: flex;

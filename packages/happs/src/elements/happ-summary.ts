@@ -8,11 +8,12 @@ import { hashProperty, sharedStyles } from '@tnesh-stack/elements';
 import '@tnesh-stack/elements/dist/elements/display-error.js';
 import { SignalWatcher } from '@tnesh-stack/signals';
 import { EntryRecord } from '@tnesh-stack/utils';
-import { LitElement, html } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
+import { happsStyles } from '../styles.js';
 import { Happ } from '../types.js';
 
 /**
@@ -47,7 +48,11 @@ export class HappSummary extends SignalWatcher(LitElement) {
 				<div class="column" style="gap: 8px;">
 					<span>${entryRecord.entry.name}</span>
 
-					<span class="placeholder">${entryRecord.entry.description}</span>
+					<span
+						class="placeholder"
+						style="text-overflow: ellipsis; height: 56px; overflow: hidden"
+						>${entryRecord.entry.description}</span
+					>
 				</div>
 			</div>
 		`;
@@ -91,5 +96,12 @@ export class HappSummary extends SignalWatcher(LitElement) {
 		</sl-card>`;
 	}
 
-	static styles = sharedStyles;
+	static styles = [
+		happsStyles,
+		css`
+			:host {
+				display: flex;
+			}
+		`,
+	];
 }
