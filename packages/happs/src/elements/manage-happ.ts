@@ -49,6 +49,10 @@ import { happsStyles } from '../styles.js';
 import { Happ, HappVersion } from '../types.js';
 import { decodeBundle, installedApps } from '../utils.js';
 
+function happId(happVersionHash: ActionHash): string {
+	return encodeHashToBase64(happVersionHash).slice(5, 15);
+}
+
 /**
  * @element manage-happ
  * @fires happ-selected: detail will contain { happHash }
@@ -94,9 +98,7 @@ export class ManageHapp extends SignalWatcher(LitElement) {
 		);
 
 		const isInstalled = (versionHash: ActionHash) =>
-			!!apps.value.find(
-				app => app.installed_app_id === encodeHashToBase64(versionHash),
-			);
+			!!apps.value.find(app => app.installed_app_id === happId(versionHash));
 
 		const latestVersion = sortedVersions[0];
 
@@ -119,7 +121,7 @@ export class ManageHapp extends SignalWatcher(LitElement) {
 			);
 			const bundle: WebAppBundle = await decodeBundle(file);
 			await installWebHapp(
-				encodeHashToBase64(happVersionHash),
+				happId(happVersionHash),
 				bundle,
 				undefined,
 				undefined,
@@ -134,7 +136,7 @@ export class ManageHapp extends SignalWatcher(LitElement) {
 
 	async uninstall(happVersionHash: ActionHash) {
 		try {
-			await uninstallWebHapp(encodeHashToBase64(happVersionHash));
+			await uninstallWebHapp(happId(happVersionHash));
 			installedApps.reload();
 			notify(msg('hApp uninstalled successfully.'));
 		} catch (e) {
@@ -145,7 +147,7 @@ export class ManageHapp extends SignalWatcher(LitElement) {
 
 	async open(happ: EntryRecord<Happ>, happVersionHash: ActionHash) {
 		try {
-			await openHapp(encodeHashToBase64(happVersionHash), happ.entry.name);
+			await openHapp(happId(happVersionHash), happ.entry.name);
 		} catch (e) {
 			notifyError(msg('Error opening the hApp'));
 			console.error(e);

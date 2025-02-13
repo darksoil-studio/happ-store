@@ -22,7 +22,7 @@
   "scripts": {
     "start": "vite --clearScreen false --port $UI_PORT",
     "build": "tsc && pnpm localize:build",
-    "build:watch": "tsc -w",
+    "build:watch": "tsc -w --preserveWatchOutput",
     "lint": "eslint src",
     "analyze": "cem analyze --litelement --exclude dist",
     "format": "eslint src --fix",
