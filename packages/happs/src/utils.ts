@@ -47,15 +47,7 @@ export function fromPromiseWithReload<T>(task: () => Promise<T>): {
 						});
 					});
 			},
-			[Signal.subtle.unwatched]: () => {
-				// We revert back to pending state so that the next time this signal is queried,
-				// the backend request is sent again
-				setTimeout(() => {
-					signal.set({
-						status: 'pending',
-					});
-				});
-			},
+			[Signal.subtle.unwatched]: () => {},
 		},
 	);
 	return {
