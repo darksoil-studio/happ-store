@@ -50,7 +50,7 @@ import { Happ, HappVersion } from '../types.js';
 import { decodeBundle, installedApps } from '../utils.js';
 
 function happId(happVersionHash: ActionHash): string {
-	return encodeHashToBase64(happVersionHash);
+	return encodeHashToBase64(happVersionHash).toLowerCase();
 }
 
 /**
