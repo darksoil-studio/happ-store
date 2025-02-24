@@ -35,17 +35,17 @@ import { repeat } from 'lit/directives/repeat.js';
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
 import { happsStyles } from '../styles.js';
-import { HappVersion } from '../types.js';
+import { HappRelease } from '../types.js';
 
 /**
- * @element create-happ-version
- * @fires happ-version-created: detail will contain { happVersionHash }
+ * @element create-happ-release
+ * @fires happ-release-created: detail will contain { happReleaseHash }
  */
 @localized()
-@customElement('create-happ-version')
-export class CreateHappVersion extends SignalWatcher(LitElement) {
+@customElement('create-happ-release')
+export class CreateHappRelease extends SignalWatcher(LitElement) {
 	/**
-	 * REQUIRED. The happ hash for this HappVersion
+	 * REQUIRED. The happ hash for this HappRelease
 	 */
 	@property(hashProperty('happ-hash'))
 	happHash!: ActionHash;
@@ -68,13 +68,13 @@ export class CreateHappVersion extends SignalWatcher(LitElement) {
 	@query('#create-form')
 	form!: HTMLFormElement;
 
-	async createHappVersion(fields: Partial<HappVersion>) {
+	async createHappRelease(fields: Partial<HappRelease>) {
 		if (this.happHash === undefined)
 			throw new Error(
-				'Cannot create a new Happ Version without its happ_hash field',
+				'Cannot create a new hApp Release without its happ_hash field',
 			);
 
-		const happVersion: HappVersion = {
+		const happRelease: HappRelease = {
 			happ_hash: this.happHash!,
 			version: fields.version!,
 			changes: fields.changes!,
@@ -83,15 +83,15 @@ export class CreateHappVersion extends SignalWatcher(LitElement) {
 
 		try {
 			this.committing = true;
-			const record: EntryRecord<HappVersion> =
-				await this.happsStore.client.createHappVersion(happVersion);
+			const record: EntryRecord<HappRelease> =
+				await this.happsStore.client.createHappRelease(happRelease);
 
 			this.dispatchEvent(
-				new CustomEvent('happ-version-created', {
+				new CustomEvent('happ-release-created', {
 					composed: true,
 					bubbles: true,
 					detail: {
-						happVersionHash: record.actionHash,
+						happReleaseHash: record.actionHash,
 					},
 				}),
 			);
@@ -110,7 +110,7 @@ export class CreateHappVersion extends SignalWatcher(LitElement) {
 				id="create-form"
 				class="column"
 				style="flex: 1; gap: 16px;"
-				${onSubmit(fields => this.createHappVersion(fields))}
+				${onSubmit(fields => this.createHappRelease(fields))}
 			>
 				<span>${msg('Web hApp Bundle')}*</span>
 				<upload-files
@@ -127,7 +127,7 @@ export class CreateHappVersion extends SignalWatcher(LitElement) {
 				></sl-textarea>
 
 				<sl-button variant="primary" type="submit" .loading=${this.committing}
-					>${msg('Create Happ Version')}</sl-button
+					>${msg('Create hApp Release')}</sl-button
 				>
 			</form>
 		</sl-card>`;

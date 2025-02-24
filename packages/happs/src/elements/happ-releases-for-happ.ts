@@ -18,17 +18,17 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
 import { happsStyles } from '../styles.js';
-import { HappVersion } from '../types.js';
-import './happ-version-summary.js';
+import { HappRelease } from '../types.js';
+import './happ-release-summary.js';
 
 /**
- * @element happ-versions-for-happ
+ * @element happ-releases-for-happ
  */
 @localized()
-@customElement('happ-versions-for-happ')
-export class HappVersionsForHapp extends SignalWatcher(LitElement) {
+@customElement('happ-releases-for-happ')
+export class HappReleasesForHapp extends SignalWatcher(LitElement) {
 	/**
-	 * REQUIRED. The HappHash for which the HappVersions should be fetched
+	 * REQUIRED. The HappHash for which the HappReleases should be fetched
 	 */
 	@property(hashProperty('happ-hash'))
 	happHash!: ActionHash;
@@ -47,7 +47,7 @@ export class HappVersionsForHapp extends SignalWatcher(LitElement) {
 					.src=${wrapPathInSvg(mdiInformationOutline)}
 				></sl-icon>
 				<span class="placeholder"
-					>${msg('No happ versions found for this happ')}</span
+					>${msg('No releases found for this hApp.')}</span
 				>
 			</div>`;
 		}
@@ -56,16 +56,16 @@ export class HappVersionsForHapp extends SignalWatcher(LitElement) {
 			<div style="display: flex; flex-direction: column; gap: 8px">
 				${hashes.map(
 					hash =>
-						html`<happ-version-summary
-							.happVersionHash=${hash}
-						></happ-version-summary>`,
+						html`<happ-release-summary
+							.happReleaseHash=${hash}
+						></happ-release-summary>`,
 				)}
 			</div>
 		`;
 	}
 
 	render() {
-		const map = this.happsStore.happs.get(this.happHash).happVersions.get();
+		const map = this.happsStore.happs.get(this.happHash).happReleases.get();
 
 		switch (map.status) {
 			case 'pending':

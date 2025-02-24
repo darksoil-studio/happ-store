@@ -1,5 +1,5 @@
-import { HappVersion } from '@darksoil-studio/happs-zome';
-import { sampleHappVersion } from '@darksoil-studio/happs-zome/dist/mocks.js';
+import { HappRelease } from '@darksoil-studio/happs-zome';
+import { sampleHappRelease } from '@darksoil-studio/happs-zome/dist/mocks.js';
 import {
 	ActionHash,
 	Delete,
@@ -15,93 +15,93 @@ import { assert, test } from 'vitest';
 
 import { setup } from './setup.js';
 
-test('create HappVersion', async () => {
+test('create HappRelease', async () => {
 	await runScenario(async scenario => {
 		const [alice, bob] = await setup(scenario);
 
-		// Alice creates a HappVersion
-		const happVersion: EntryRecord<HappVersion> =
-			await alice.store.client.createHappVersion(
-				await sampleHappVersion(alice.store.client),
+		// Alice creates a HappRelease
+		const happRelease: EntryRecord<HappRelease> =
+			await alice.store.client.createHappRelease(
+				await sampleHappRelease(alice.store.client),
 			);
-		assert.ok(happVersion);
+		assert.ok(happRelease);
 	});
 });
 
-test('create and read HappVersion', async () => {
+test('create and read HappRelease', async () => {
 	await runScenario(async scenario => {
 		const [alice, bob] = await setup(scenario);
 
-		const sample = await sampleHappVersion(alice.store.client);
+		const sample = await sampleHappRelease(alice.store.client);
 
-		// Alice creates a HappVersion
-		const happVersion: EntryRecord<HappVersion> =
-			await alice.store.client.createHappVersion(sample);
-		assert.ok(happVersion);
+		// Alice creates a HappRelease
+		const happRelease: EntryRecord<HappRelease> =
+			await alice.store.client.createHappRelease(sample);
+		assert.ok(happRelease);
 
 		// Wait for the created entry to be propagated to the other node.
 		await dhtSync([alice.player, bob.player], alice.player.cells[0].cell_id[0]);
 
-		// Bob gets the created HappVersion
-		const createReadOutput: EntryRecord<HappVersion> = await toPromise(
-			bob.store.happVersions.get(happVersion.actionHash).original,
+		// Bob gets the created HappRelease
+		const createReadOutput: EntryRecord<HappRelease> = await toPromise(
+			bob.store.happReleases.get(happRelease.actionHash).original,
 		);
 		assert.deepEqual(sample, cleanNodeDecoding(createReadOutput.entry));
 	});
 });
 
-test('create and update HappVersion', async () => {
+test('create and update HappRelease', async () => {
 	await runScenario(async scenario => {
 		const [alice, bob] = await setup(scenario);
 
-		// Alice creates a HappVersion
-		const happVersion: EntryRecord<HappVersion> =
-			await alice.store.client.createHappVersion(
-				await sampleHappVersion(alice.store.client),
+		// Alice creates a HappRelease
+		const happRelease: EntryRecord<HappRelease> =
+			await alice.store.client.createHappRelease(
+				await sampleHappRelease(alice.store.client),
 			);
-		assert.ok(happVersion);
+		assert.ok(happRelease);
 
-		const originalActionHash = happVersion.actionHash;
+		const originalActionHash = happRelease.actionHash;
 
-		// Alice updates the HappVersion
-		let contentUpdate = await sampleHappVersion(alice.store.client);
+		// Alice updates the HappRelease
+		let contentUpdate = await sampleHappRelease(alice.store.client);
 
-		let updatedHappVersion: EntryRecord<HappVersion> =
-			await alice.store.client.updateHappVersion(
+		let updatedHappRelease: EntryRecord<HappRelease> =
+			await alice.store.client.updateHappRelease(
 				originalActionHash,
 				originalActionHash,
 				contentUpdate,
 			);
-		assert.ok(updatedHappVersion);
+		assert.ok(updatedHappRelease);
 
 		// Wait for the created entry to be propagated to the other node.
 		await dhtSync([alice.player, bob.player], alice.player.cells[0].cell_id[0]);
 
-		// Bob gets the updated HappVersion
-		const readUpdatedOutput0: EntryRecord<HappVersion> = await toPromise(
-			bob.store.happVersions.get(happVersion.actionHash).latestVersion,
+		// Bob gets the updated HappRelease
+		const readUpdatedOutput0: EntryRecord<HappRelease> = await toPromise(
+			bob.store.happReleases.get(happRelease.actionHash).latestVersion,
 		);
 		assert.deepEqual(
 			contentUpdate,
 			cleanNodeDecoding(readUpdatedOutput0.entry),
 		);
 
-		// Alice updates the HappVersion again
-		contentUpdate = await sampleHappVersion(alice.store.client);
+		// Alice updates the HappRelease again
+		contentUpdate = await sampleHappRelease(alice.store.client);
 
-		updatedHappVersion = await alice.store.client.updateHappVersion(
+		updatedHappRelease = await alice.store.client.updateHappRelease(
 			originalActionHash,
-			updatedHappVersion.actionHash,
+			updatedHappRelease.actionHash,
 			contentUpdate,
 		);
-		assert.ok(updatedHappVersion);
+		assert.ok(updatedHappRelease);
 
 		// Wait for the created entry to be propagated to the other node.
 		await dhtSync([alice.player, bob.player], alice.player.cells[0].cell_id[0]);
 
-		// Bob gets the updated HappVersion
-		const readUpdatedOutput1: EntryRecord<HappVersion> = await toPromise(
-			bob.store.happVersions.get(originalActionHash).latestVersion,
+		// Bob gets the updated HappRelease
+		const readUpdatedOutput1: EntryRecord<HappRelease> = await toPromise(
+			bob.store.happReleases.get(originalActionHash).latestVersion,
 		);
 		assert.deepEqual(
 			contentUpdate,

@@ -46,11 +46,11 @@ import {
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
 import { happsStyles } from '../styles.js';
-import { Happ, HappVersion } from '../types.js';
+import { Happ, HappRelease } from '../types.js';
 import { decodeBundle, installedApps } from '../utils.js';
 
-function happId(happVersionHash: ActionHash): string {
-	return encodeHashToBase64(happVersionHash).toLowerCase();
+function happId(happReleaseHash: ActionHash): string {
+	return encodeHashToBase64(happReleaseHash).toLowerCase();
 }
 
 /**
@@ -78,7 +78,7 @@ export class ManageHapp extends SignalWatcher(LitElement) {
 	versions() {
 		const versions = this.happsStore.happs
 			.get(this.happHash)
-			.happVersions.get();
+			.happReleases.get();
 		if (versions.status !== 'completed') return versions;
 
 		const originalVersions = joinAsyncMap(
@@ -112,16 +112,16 @@ export class ManageHapp extends SignalWatcher(LitElement) {
 	}
 
 	async install(
-		happVersionHash: ActionHash,
-		happVersion: EntryRecord<HappVersion>,
+		happReleaseHash: ActionHash,
+		happRelease: EntryRecord<HappRelease>,
 	) {
 		try {
 			const file = await this.fileStorageClient.downloadFile(
-				happVersion.entry.web_happ_bundle_hash,
+				happRelease.entry.web_happ_bundle_hash,
 			);
 			const bundle: WebAppBundle = await decodeBundle(file);
 			await installWebHapp(
-				happId(happVersionHash),
+				happId(happReleaseHash),
 				bundle,
 				undefined,
 				undefined,
@@ -134,9 +134,9 @@ export class ManageHapp extends SignalWatcher(LitElement) {
 		}
 	}
 
-	async uninstall(happVersionHash: ActionHash) {
+	async uninstall(happReleaseHash: ActionHash) {
 		try {
-			await uninstallWebHapp(happId(happVersionHash));
+			await uninstallWebHapp(happId(happReleaseHash));
 			installedApps.reload();
 			notify(msg('hApp uninstalled successfully.'));
 		} catch (e) {
@@ -145,9 +145,9 @@ export class ManageHapp extends SignalWatcher(LitElement) {
 		}
 	}
 
-	async open(happ: EntryRecord<Happ>, happVersionHash: ActionHash) {
+	async open(happ: EntryRecord<Happ>, happReleaseHash: ActionHash) {
 		try {
-			await openHapp(happId(happVersionHash), happ.entry.name);
+			await openHapp(happId(happReleaseHash), happ.entry.name);
 		} catch (e) {
 			notifyError(msg('Error opening the hApp'));
 			console.error(e);
@@ -156,7 +156,7 @@ export class ManageHapp extends SignalWatcher(LitElement) {
 
 	renderAction(
 		happ: EntryRecord<Happ>,
-		latestVersion: [ActionHash, EntryRecord<HappVersion>],
+		latestVersion: [ActionHash, EntryRecord<HappRelease>],
 		isInstalled: boolean,
 	) {
 		if (isInstalled)
@@ -224,7 +224,7 @@ export class ManageHapp extends SignalWatcher(LitElement) {
 
 	renderSummary(
 		happ: EntryRecord<Happ>,
-		latestVersion: [ActionHash, EntryRecord<HappVersion>],
+		latestVersion: [ActionHash, EntryRecord<HappRelease>],
 		isInstalled: boolean,
 	) {
 		return html`

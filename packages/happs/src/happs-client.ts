@@ -16,7 +16,7 @@ import {
 	isSignalFromCellWithRole,
 } from '@tnesh-stack/utils';
 
-import { HappVersion } from './types.js';
+import { HappRelease } from './types.js';
 import { Happ } from './types.js';
 import { HappsSignal } from './types.js';
 
@@ -102,63 +102,63 @@ export class HappsClient extends ZomeClient<HappsSignal> {
 		return this.callZome('republish_happ', happHash);
 	}
 
-	/** Happ Version */
+	/** hApp Release */
 
-	async createHappVersion(
-		happVersion: HappVersion,
-	): Promise<EntryRecord<HappVersion>> {
+	async createHappRelease(
+		happRelease: HappRelease,
+	): Promise<EntryRecord<HappRelease>> {
 		const record: Record = await this.callZome(
-			'create_happ_version',
-			happVersion,
+			'create_happ_release',
+			happRelease,
 		);
 		return new EntryRecord(record);
 	}
 
-	async getLatestHappVersion(
-		happVersionHash: ActionHash,
-	): Promise<EntryRecord<HappVersion> | undefined> {
+	async getLatestHappRelease(
+		happReleaseHash: ActionHash,
+	): Promise<EntryRecord<HappRelease> | undefined> {
 		const record: Record = await this.callZome(
-			'get_latest_happ_version',
-			happVersionHash,
+			'get_latest_happ_release',
+			happReleaseHash,
 		);
 		return record ? new EntryRecord(record) : undefined;
 	}
 
-	async getOriginalHappVersion(
-		happVersionHash: ActionHash,
-	): Promise<EntryRecord<HappVersion> | undefined> {
+	async getOriginalHappRelease(
+		happReleaseHash: ActionHash,
+	): Promise<EntryRecord<HappRelease> | undefined> {
 		const record: Record = await this.callZome(
-			'get_original_happ_version',
-			happVersionHash,
+			'get_original_happ_release',
+			happReleaseHash,
 		);
 		return record ? new EntryRecord(record) : undefined;
 	}
 
-	async getAllRevisionsForHappVersion(
-		happVersionHash: ActionHash,
-	): Promise<Array<EntryRecord<HappVersion>>> {
+	async getAllRevisionsForHappRelease(
+		happReleaseHash: ActionHash,
+	): Promise<Array<EntryRecord<HappRelease>>> {
 		const records: Record[] = await this.callZome(
-			'get_all_revisions_for_happ_version',
-			happVersionHash,
+			'get_all_revisions_for_happ_release',
+			happReleaseHash,
 		);
 		return records.map(r => new EntryRecord(r));
 	}
 
-	async updateHappVersion(
-		originalHappVersionHash: ActionHash,
-		previousHappVersionHash: ActionHash,
-		updatedHappVersion: HappVersion,
-	): Promise<EntryRecord<HappVersion>> {
-		const record: Record = await this.callZome('update_happ_version', {
-			original_happ_version_hash: originalHappVersionHash,
-			previous_happ_version_hash: previousHappVersionHash,
-			updated_happ_version: updatedHappVersion,
+	async updateHappRelease(
+		originalHappReleaseHash: ActionHash,
+		previousHappReleaseHash: ActionHash,
+		updatedHappRelease: HappRelease,
+	): Promise<EntryRecord<HappRelease>> {
+		const record: Record = await this.callZome('update_happ_release', {
+			original_happ_release_hash: originalHappReleaseHash,
+			previous_happ_release_hash: previousHappReleaseHash,
+			updated_happ_release: updatedHappRelease,
 		});
 		return new EntryRecord(record);
 	}
 
-	async getHappVersionsForHapp(happHash: ActionHash): Promise<Array<Link>> {
-		return this.callZome('get_happ_versions_for_happ', happHash);
+	async getHappReleasesForHapp(happHash: ActionHash): Promise<Array<Link>> {
+		return this.callZome('get_happ_releases_for_happ', happHash);
 	}
 
 	/** All Happs */

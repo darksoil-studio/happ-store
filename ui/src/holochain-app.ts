@@ -98,11 +98,11 @@ export class HolochainApp extends SignalWatcher(LitElement) {
 						<happ-detail
 							style="width: 600px"
 							.happHash=${decodeHashFromBase64(params.happHash!)}
-							@new-happ-version-selected=${(e: CustomEvent) =>
-								this.router.goto(`/happ/${params.happHash}/new-version`)}
-							@happ-version-selected=${(e: CustomEvent) =>
+							@new-happ-release-selected=${(e: CustomEvent) =>
+								this.router.goto(`/happ/${params.happHash}/new-release`)}
+							@happ-release-selected=${(e: CustomEvent) =>
 								this.router.goto(
-									`/happ/${params.happHash}/version/${encodeHashToBase64(e.detail.happVersionHash)}`,
+									`/happ/${params.happHash}/release/${encodeHashToBase64(e.detail.happReleaseHash)}`,
 								)}
 						>
 						</happ-detail>
@@ -111,34 +111,34 @@ export class HolochainApp extends SignalWatcher(LitElement) {
 			},
 		},
 		{
-			path: '/happ/:happHash/new-version',
+			path: '/happ/:happHash/new-release',
 			render: params =>
 				html` <overlay-page
-					.title=${msg('New Version')}
+					.title=${msg('New Release')}
 					@close-requested=${() => this.router.goto(`/happ/${params.happHash}`)}
 				>
-					<create-happ-version
+					<create-happ-release
 						style="width: 600px"
 						.happHash=${decodeHashFromBase64(params.happHash!)}
-						@happ-version-created=${(e: CustomEvent) =>
+						@happ-release-created=${(e: CustomEvent) =>
 							this.router.goto(
-								`/happ/${params.happHash}/version/${encodeHashToBase64(e.detail.happVersionHash)}`,
+								`/happ/${params.happHash}/release/${encodeHashToBase64(e.detail.happReleaseHash)}`,
 							)}
-					></create-happ-version>
+					></create-happ-release>
 				</overlay-page>`,
 		},
 		{
-			path: '/happ/:happHash/version/:happVersionHash',
+			path: '/happ/:happHash/release/:happReleaseHash',
 			render: params =>
 				html` <overlay-page
 					icon="back"
-					.title=${msg('Version')}
+					.title=${msg('Release')}
 					@close-requested=${() => this.router.goto(`/happ/${params.happHash}`)}
 				>
-					<happ-version-detail
+					<happ-release-detail
 						style="width: 600px"
-						.happVersionHash=${decodeHashFromBase64(params.happVersionHash!)}
-					></happ-version-detail>
+						.happReleaseHash=${decodeHashFromBase64(params.happReleaseHash!)}
+					></happ-release-detail>
 				</overlay-page>`,
 		},
 		{

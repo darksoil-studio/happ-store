@@ -36,10 +36,10 @@ import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
 import { happsStyles } from '../styles.js';
 import { Happ } from '../types.js';
-import './create-happ-version.js';
+import './create-happ-release.js';
 import './edit-happ.js';
-import './happ-version-detail.js';
-import './happ-versions-for-happ.js';
+import './happ-release-detail.js';
+import './happ-releases-for-happ.js';
 
 /**
  * @element happ-detail
@@ -261,7 +261,7 @@ export class HappDetail extends SignalWatcher(LitElement) {
 							variant="primary"
 							@click=${() =>
 								this.dispatchEvent(
-									new CustomEvent('new-happ-version-selected', {
+									new CustomEvent('new-happ-release-selected', {
 										bubbles: true,
 										composed: true,
 									}),
@@ -272,8 +272,8 @@ export class HappDetail extends SignalWatcher(LitElement) {
 
 					<sl-divider> </sl-divider>
 
-					<happ-versions-for-happ .happHash=${this.happHash}>
-					</happ-versions-for-happ>
+					<happ-releases-for-happ .happHash=${this.happHash}>
+					</happ-releases-for-happ>
 				</div>
 			</div>
 		`;

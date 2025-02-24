@@ -70,7 +70,7 @@ export class AllHapps extends SignalWatcher(LitElement) {
 
 		const happsVersionsAndUnpublishedLinks = joinAsyncMap(
 			mapValues(allHapps.value, happ =>
-				joinAsync([happ.happVersions.get(), happ.unpublishedLinks.get()]),
+				joinAsync([happ.happReleases.get(), happ.unpublishedLinks.get()]),
 			),
 		);
 		if (happsVersionsAndUnpublishedLinks.status !== 'completed')

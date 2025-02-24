@@ -1,7 +1,7 @@
 pub mod happ_unpublished;
 pub use happ_unpublished::*;
-pub mod happ_version;
-pub use happ_version::*;
+pub mod happ_release;
+pub use happ_release::*;
 pub mod happ;
 pub use happ::*;
 use hdi::prelude::*;
@@ -12,7 +12,7 @@ use hdi::prelude::*;
 #[unit_enum(UnitEntryTypes)]
 pub enum EntryTypes {
     Happ(Happ),
-    HappVersion(HappVersion),
+    HappRelease(HappRelease),
 }
 
 #[derive(Serialize, Deserialize)]
@@ -20,8 +20,8 @@ pub enum EntryTypes {
 pub enum LinkTypes {
     HappUpdates,
     HappUnpublished,
-    HappToHappVersions,
-    HappVersionUpdates,
+    HappToHappReleases,
+    HappReleaseUpdates,
     AllHapps,
     PublisherHapps,
 }
@@ -68,8 +68,8 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                 EntryTypes::Happ(happ) => {
                     validate_create_happ(EntryCreationAction::Create(action), happ)
                 }
-                EntryTypes::HappVersion(happ_version) => {
-                    validate_create_happ_version(EntryCreationAction::Create(action), happ_version)
+                EntryTypes::HappRelease(happ_release) => {
+                    validate_create_happ_release(EntryCreationAction::Create(action), happ_release)
                 }
             },
             OpEntry::UpdateEntry {
@@ -78,8 +78,8 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                 EntryTypes::Happ(happ) => {
                     validate_create_happ(EntryCreationAction::Update(action), happ)
                 }
-                EntryTypes::HappVersion(happ_version) => {
-                    validate_create_happ_version(EntryCreationAction::Update(action), happ_version)
+                EntryTypes::HappRelease(happ_release) => {
+                    validate_create_happ_release(EntryCreationAction::Update(action), happ_release)
                 }
             },
             _ => Ok(ValidateCallbackResult::Valid),
@@ -98,23 +98,23 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                     }
                 };
                 match app_entry {
-                    EntryTypes::HappVersion(happ_version) => {
+                    EntryTypes::HappRelease(happ_release) => {
                         let original_app_entry =
                             must_get_valid_record(action.clone().original_action_address)?;
-                        let original_happ_version = match HappVersion::try_from(original_app_entry)
+                        let original_happ_release = match HappRelease::try_from(original_app_entry)
                         {
                             Ok(entry) => entry,
                             Err(e) => {
                                 return Ok(ValidateCallbackResult::Invalid(format!(
-                                    "Expected to get HappVersion from Record: {e:?}"
+                                    "Expected to get HappRelease from Record: {e:?}"
                                 )));
                             }
                         };
-                        validate_update_happ_version(
+                        validate_update_happ_release(
                             action,
-                            happ_version,
+                            happ_release,
                             original_create_action,
-                            original_happ_version,
+                            original_happ_release,
                         )
                     }
                     EntryTypes::Happ(happ) => {
@@ -174,10 +174,10 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                 }
             };
             match original_app_entry {
-                EntryTypes::HappVersion(original_happ_version) => validate_delete_happ_version(
+                EntryTypes::HappRelease(original_happ_release) => validate_delete_happ_release(
                     delete_entry.clone().action,
                     original_action,
-                    original_happ_version,
+                    original_happ_release,
                 ),
                 EntryTypes::Happ(original_happ) => validate_delete_happ(
                     delete_entry.clone().action,
@@ -196,14 +196,14 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
             LinkTypes::HappUpdates => {
                 validate_create_link_happ_updates(action, base_address, target_address, tag)
             }
-            LinkTypes::HappToHappVersions => validate_create_link_happ_to_happ_versions(
+            LinkTypes::HappToHappReleases => validate_create_link_happ_to_happ_releases(
                 action,
                 base_address,
                 target_address,
                 tag,
             ),
-            LinkTypes::HappVersionUpdates => {
-                validate_create_link_happ_version_updates(action, base_address, target_address, tag)
+            LinkTypes::HappReleaseUpdates => {
+                validate_create_link_happ_release_updates(action, base_address, target_address, tag)
             }
             LinkTypes::AllHapps => {
                 validate_create_link_all_happs(action, base_address, target_address, tag)
@@ -230,14 +230,14 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                 target_address,
                 tag,
             ),
-            LinkTypes::HappToHappVersions => validate_delete_link_happ_to_happ_versions(
+            LinkTypes::HappToHappReleases => validate_delete_link_happ_to_happ_releases(
                 action,
                 original_action,
                 base_address,
                 target_address,
                 tag,
             ),
-            LinkTypes::HappVersionUpdates => validate_delete_link_happ_version_updates(
+            LinkTypes::HappReleaseUpdates => validate_delete_link_happ_release_updates(
                 action,
                 original_action,
                 base_address,
@@ -275,9 +275,9 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                     EntryTypes::Happ(happ) => {
                         validate_create_happ(EntryCreationAction::Create(action), happ)
                     }
-                    EntryTypes::HappVersion(happ_version) => validate_create_happ_version(
+                    EntryTypes::HappRelease(happ_release) => validate_create_happ_release(
                         EntryCreationAction::Create(action),
-                        happ_version,
+                        happ_release,
                     ),
                 },
                 // Complementary validation to the `RegisterUpdate` Op, in which the record itself is validated
@@ -328,18 +328,18 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                                 Ok(result)
                             }
                         }
-                        EntryTypes::HappVersion(happ_version) => {
-                            let result = validate_create_happ_version(
+                        EntryTypes::HappRelease(happ_release) => {
+                            let result = validate_create_happ_release(
                                 EntryCreationAction::Update(action.clone()),
-                                happ_version.clone(),
+                                happ_release.clone(),
                             )?;
                             if let ValidateCallbackResult::Valid = result {
-                                let original_happ_version: Option<HappVersion> = original_record
+                                let original_happ_release: Option<HappRelease> = original_record
                                     .entry()
                                     .to_app_option()
                                     .map_err(|e| wasm_error!(e))?;
-                                let original_happ_version = match original_happ_version {
-                                    Some(happ_version) => happ_version,
+                                let original_happ_release = match original_happ_release {
+                                    Some(happ_release) => happ_release,
                                     None => {
                                         return Ok(
                                             ValidateCallbackResult::Invalid(
@@ -349,11 +349,11 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                                         );
                                     }
                                 };
-                                validate_update_happ_version(
+                                validate_update_happ_release(
                                     action,
-                                    happ_version,
+                                    happ_release,
                                     original_action,
-                                    original_happ_version,
+                                    original_happ_release,
                                 )
                             } else {
                                 Ok(result)
@@ -414,11 +414,11 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                         EntryTypes::Happ(original_happ) => {
                             validate_delete_happ(action, original_action, original_happ)
                         }
-                        EntryTypes::HappVersion(original_happ_version) => {
-                            validate_delete_happ_version(
+                        EntryTypes::HappRelease(original_happ_release) => {
+                            validate_delete_happ_release(
                                 action,
                                 original_action,
-                                original_happ_version,
+                                original_happ_release,
                             )
                         }
                     }
@@ -436,13 +436,13 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                     LinkTypes::HappUpdates => {
                         validate_create_link_happ_updates(action, base_address, target_address, tag)
                     }
-                    LinkTypes::HappToHappVersions => validate_create_link_happ_to_happ_versions(
+                    LinkTypes::HappToHappReleases => validate_create_link_happ_to_happ_releases(
                         action,
                         base_address,
                         target_address,
                         tag,
                     ),
-                    LinkTypes::HappVersionUpdates => validate_create_link_happ_version_updates(
+                    LinkTypes::HappReleaseUpdates => validate_create_link_happ_release_updates(
                         action,
                         base_address,
                         target_address,
@@ -499,8 +499,8 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                             create_link.target_address,
                             create_link.tag,
                         ),
-                        LinkTypes::HappToHappVersions => {
-                            validate_delete_link_happ_to_happ_versions(
+                        LinkTypes::HappToHappReleases => {
+                            validate_delete_link_happ_to_happ_releases(
                                 action,
                                 create_link.clone(),
                                 base_address,
@@ -508,7 +508,7 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                                 create_link.tag,
                             )
                         }
-                        LinkTypes::HappVersionUpdates => validate_delete_link_happ_version_updates(
+                        LinkTypes::HappReleaseUpdates => validate_delete_link_happ_release_updates(
                             action,
                             create_link.clone(),
                             base_address,

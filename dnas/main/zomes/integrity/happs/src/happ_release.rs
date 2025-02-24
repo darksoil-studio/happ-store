@@ -2,18 +2,18 @@ use hdi::prelude::*;
 
 #[derive(Clone, PartialEq)]
 #[hdk_entry_helper]
-pub struct HappVersion {
+pub struct HappRelease {
     pub happ_hash: ActionHash,
     pub version: String,
     pub changes: String,
     pub web_happ_bundle_hash: EntryHash,
 }
 
-pub fn validate_create_happ_version(
+pub fn validate_create_happ_release(
     _action: EntryCreationAction,
-    happ_version: HappVersion,
+    happ_release: HappRelease,
 ) -> ExternResult<ValidateCallbackResult> {
-    let record = must_get_valid_record(happ_version.happ_hash.clone())?;
+    let record = must_get_valid_record(happ_release.happ_hash.clone())?;
     let _happ: crate::Happ = record
         .entry()
         .to_app_option()
@@ -25,27 +25,27 @@ pub fn validate_create_happ_version(
     Ok(ValidateCallbackResult::Valid)
 }
 
-pub fn validate_update_happ_version(
+pub fn validate_update_happ_release(
     _action: Update,
-    _happ_version: HappVersion,
+    _happ_release: HappRelease,
     _original_action: EntryCreationAction,
-    _original_happ_version: HappVersion,
+    _original_happ_release: HappRelease,
 ) -> ExternResult<ValidateCallbackResult> {
     // TODO: add the appropriate validation rules
     Ok(ValidateCallbackResult::Valid)
 }
 
-pub fn validate_delete_happ_version(
+pub fn validate_delete_happ_release(
     _action: Delete,
     _original_action: EntryCreationAction,
-    _original_happ_version: HappVersion,
+    _original_happ_release: HappRelease,
 ) -> ExternResult<ValidateCallbackResult> {
     Ok(ValidateCallbackResult::Invalid(
-        "Happ Versions cannot be deleted".to_string(),
+        "hApp Releases cannot be deleted".to_string(),
     ))
 }
 
-pub fn validate_create_link_happ_to_happ_versions(
+pub fn validate_create_link_happ_to_happ_releases(
     _action: CreateLink,
     base_address: AnyLinkableHash,
     target_address: AnyLinkableHash,
@@ -71,7 +71,7 @@ pub fn validate_create_link_happ_to_happ_versions(
                 "No action hash associated with link".to_string()
             )))?;
     let record = must_get_valid_record(action_hash)?;
-    let _happ_version: crate::HappVersion = record
+    let _happ_release: crate::HappRelease = record
         .entry()
         .to_app_option()
         .map_err(|e| wasm_error!(e))?
@@ -82,7 +82,7 @@ pub fn validate_create_link_happ_to_happ_versions(
     Ok(ValidateCallbackResult::Valid)
 }
 
-pub fn validate_delete_link_happ_to_happ_versions(
+pub fn validate_delete_link_happ_to_happ_releases(
     _action: DeleteLink,
     _original_action: CreateLink,
     _base: AnyLinkableHash,
@@ -90,11 +90,11 @@ pub fn validate_delete_link_happ_to_happ_versions(
     _tag: LinkTag,
 ) -> ExternResult<ValidateCallbackResult> {
     Ok(ValidateCallbackResult::Invalid(
-        "HappToHappVersions links cannot be deleted".to_string(),
+        "HappToHappReleases links cannot be deleted".to_string(),
     ))
 }
 
-pub fn validate_create_link_happ_version_updates(
+pub fn validate_create_link_happ_release_updates(
     _action: CreateLink,
     base_address: AnyLinkableHash,
     target_address: AnyLinkableHash,
@@ -106,7 +106,7 @@ pub fn validate_create_link_happ_version_updates(
             "No action hash associated with link".to_string()
         )))?;
     let record = must_get_valid_record(action_hash)?;
-    let _happ_version: crate::HappVersion = record
+    let _happ_release: crate::HappRelease = record
         .entry()
         .to_app_option()
         .map_err(|e| wasm_error!(e))?
@@ -120,7 +120,7 @@ pub fn validate_create_link_happ_version_updates(
                 "No action hash associated with link".to_string()
             )))?;
     let record = must_get_valid_record(action_hash)?;
-    let _happ_version: crate::HappVersion = record
+    let _happ_release: crate::HappRelease = record
         .entry()
         .to_app_option()
         .map_err(|e| wasm_error!(e))?
@@ -131,7 +131,7 @@ pub fn validate_create_link_happ_version_updates(
     Ok(ValidateCallbackResult::Valid)
 }
 
-pub fn validate_delete_link_happ_version_updates(
+pub fn validate_delete_link_happ_release_updates(
     _action: DeleteLink,
     _original_action: CreateLink,
     _base: AnyLinkableHash,
@@ -139,6 +139,6 @@ pub fn validate_delete_link_happ_version_updates(
     _tag: LinkTag,
 ) -> ExternResult<ValidateCallbackResult> {
     Ok(ValidateCallbackResult::Invalid(
-        "HappVersionUpdates links cannot be deleted".to_string(),
+        "HappReleaseUpdates links cannot be deleted".to_string(),
     ))
 }

@@ -27,16 +27,16 @@ export class HappsStore {
 		deletes: deletesForEntrySignal(this.client, happHash, () =>
 			this.client.getAllDeletesForHapp(happHash),
 		),
-		happVersions: pipe(
+		happReleases: pipe(
 			liveLinksSignal(
 				this.client,
 				happHash,
-				() => this.client.getHappVersionsForHapp(happHash),
-				'HappToHappVersions',
+				() => this.client.getHappReleasesForHapp(happHash),
+				'HappToHappReleases',
 			),
 			links =>
 				slice(
-					this.happVersions,
+					this.happReleases,
 					links.map(l => l.target),
 				),
 		),
@@ -48,17 +48,17 @@ export class HappsStore {
 		),
 	}));
 
-	/** Happ Version */
+	/** hApp Release */
 
-	happVersions = new MemoHoloHashMap((happVersionHash: ActionHash) => ({
+	happReleases = new MemoHoloHashMap((happReleaseHash: ActionHash) => ({
 		latestVersion: latestVersionOfEntrySignal(this.client, () =>
-			this.client.getLatestHappVersion(happVersionHash),
+			this.client.getLatestHappRelease(happReleaseHash),
 		),
 		original: immutableEntrySignal(() =>
-			this.client.getOriginalHappVersion(happVersionHash),
+			this.client.getOriginalHappRelease(happReleaseHash),
 		),
 		allRevisions: allRevisionsOfEntrySignal(this.client, () =>
-			this.client.getAllRevisionsForHappVersion(happVersionHash),
+			this.client.getAllRevisionsForHappRelease(happReleaseHash),
 		),
 	}));
 

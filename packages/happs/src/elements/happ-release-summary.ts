@@ -15,20 +15,20 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
 import { happsStyles } from '../styles.js';
-import { HappVersion } from '../types.js';
+import { HappRelease } from '../types.js';
 
 /**
- * @element happ-version-summary
- * @fires happ-version-selected: detail will contain { happVersionHash }
+ * @element happ-release-summary
+ * @fires happ-release-selected: detail will contain { happReleaseHash }
  */
 @localized()
-@customElement('happ-version-summary')
-export class HappVersionSummary extends SignalWatcher(LitElement) {
+@customElement('happ-release-summary')
+export class HappReleaseSummary extends SignalWatcher(LitElement) {
 	/**
-	 * REQUIRED. The hash of the HappVersion to show
+	 * REQUIRED. The hash of the HappRelease to show
 	 */
-	@property(hashProperty('happ-version-hash'))
-	happVersionHash!: ActionHash;
+	@property(hashProperty('happ-release-hash'))
+	happReleaseHash!: ActionHash;
 
 	/**
 	 * @internal
@@ -36,7 +36,7 @@ export class HappVersionSummary extends SignalWatcher(LitElement) {
 	@consume({ context: happsStoreContext, subscribe: true })
 	happsStore!: HappsStore;
 
-	renderSummary(entryRecord: EntryRecord<HappVersion>) {
+	renderSummary(entryRecord: EntryRecord<HappRelease>) {
 		return html`
 			<div class="row" style="gap: 16px; flex: 1">
 				<span>${entryRecord.entry.version}</span>
@@ -49,12 +49,12 @@ export class HappVersionSummary extends SignalWatcher(LitElement) {
 		`;
 	}
 
-	renderHappVersion() {
-		const happVersion = this.happsStore.happVersions
-			.get(this.happVersionHash)
+	renderHappRelease() {
+		const happRelease = this.happsStore.happReleases
+			.get(this.happReleaseHash)
 			.latestVersion.get();
 
-		switch (happVersion.status) {
+		switch (happRelease.status) {
 			case 'pending':
 				return html`<div
 					style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1;"
@@ -64,10 +64,10 @@ export class HappVersionSummary extends SignalWatcher(LitElement) {
 			case 'error':
 				return html`<display-error
 					.headline=${msg('Error fetching the happ version')}
-					.error=${happVersion.error}
+					.error=${happRelease.error}
 				></display-error>`;
 			case 'completed':
-				return this.renderSummary(happVersion.value);
+				return this.renderSummary(happRelease.value);
 		}
 	}
 
@@ -76,16 +76,16 @@ export class HappVersionSummary extends SignalWatcher(LitElement) {
 			style="flex: 1; cursor: grab;"
 			@click=${() =>
 				this.dispatchEvent(
-					new CustomEvent('happ-version-selected', {
+					new CustomEvent('happ-release-selected', {
 						composed: true,
 						bubbles: true,
 						detail: {
-							happVersionHash: this.happVersionHash,
+							happReleaseHash: this.happReleaseHash,
 						},
 					}),
 				)}
 		>
-			${this.renderHappVersion()}
+			${this.renderHappRelease()}
 		</sl-card>`;
 	}
 

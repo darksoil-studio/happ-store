@@ -28,20 +28,20 @@ import { repeat } from 'lit/directives/repeat.js';
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
 import { happsStyles } from '../styles.js';
-import { HappVersion } from '../types.js';
+import { HappRelease } from '../types.js';
 
 /**
- * @element edit-happ-version
- * @fires happ-version-updated: detail will contain { originalHappVersionHash, previousHappVersionHash, updatedHappVersionHash }
+ * @element edit-happ-release
+ * @fires happ-release-updated: detail will contain { originalHappReleaseHash, previousHappReleaseHash, updatedHappReleaseHash }
  */
 @localized()
-@customElement('edit-happ-version')
-export class EditHappVersion extends SignalWatcher(LitElement) {
+@customElement('edit-happ-release')
+export class EditHappRelease extends SignalWatcher(LitElement) {
 	/**
-	 * REQUIRED. The hash of the original `Create` action for this HappVersion
+	 * REQUIRED. The hash of the original `Create` action for this HappRelease
 	 */
-	@property(hashProperty('happ-version-hash'))
-	happVersionHash!: ActionHash;
+	@property(hashProperty('happ-release-hash'))
+	happReleaseHash!: ActionHash;
 
 	/**
 	 * @internal
@@ -57,18 +57,18 @@ export class EditHappVersion extends SignalWatcher(LitElement) {
 
 	async firstUpdated() {
 		const currentRecord = await toPromise(
-			this.happsStore.happVersions.get(this.happVersionHash).latestVersion,
+			this.happsStore.happReleases.get(this.happReleaseHash).latestVersion,
 		);
 		setTimeout(() => {
 			(this.shadowRoot?.getElementById('form') as HTMLFormElement).reset();
 		});
 	}
 
-	async updateHappVersion(
-		currentRecord: EntryRecord<HappVersion>,
-		fields: Partial<HappVersion>,
+	async updateHappRelease(
+		currentRecord: EntryRecord<HappRelease>,
+		fields: Partial<HappRelease>,
 	) {
-		const happVersion: HappVersion = {
+		const happRelease: HappRelease = {
 			happ_hash: currentRecord.entry.happ_hash!,
 			version: currentRecord.entry.version!,
 			changes: fields.changes!,
@@ -77,20 +77,20 @@ export class EditHappVersion extends SignalWatcher(LitElement) {
 
 		try {
 			this.committing = true;
-			const updateRecord = await this.happsStore.client.updateHappVersion(
-				this.happVersionHash,
+			const updateRecord = await this.happsStore.client.updateHappRelease(
+				this.happReleaseHash,
 				currentRecord.actionHash,
-				happVersion,
+				happRelease,
 			);
 
 			this.dispatchEvent(
-				new CustomEvent('happ-version-updated', {
+				new CustomEvent('happ-release-updated', {
 					composed: true,
 					bubbles: true,
 					detail: {
-						originalHappVersionHash: this.happVersionHash,
-						previousHappVersionHash: currentRecord.actionHash,
-						updatedHappVersionHash: updateRecord.actionHash,
+						originalHappReleaseHash: this.happReleaseHash,
+						previousHappReleaseHash: currentRecord.actionHash,
+						updatedHappReleaseHash: updateRecord.actionHash,
 					},
 				}),
 			);
@@ -102,13 +102,13 @@ export class EditHappVersion extends SignalWatcher(LitElement) {
 		this.committing = false;
 	}
 
-	renderEditForm(currentRecord: EntryRecord<HappVersion>) {
+	renderEditForm(currentRecord: EntryRecord<HappRelease>) {
 		return html` <sl-card style="flex: 1">
 			<form
 				id="form"
 				class="column"
 				style="flex: 1; gap: 16px;"
-				${onSubmit(fields => this.updateHappVersion(currentRecord, fields))}
+				${onSubmit(fields => this.updateHappRelease(currentRecord, fields))}
 			>
 				<span class="title">${msg('Edit Changes')}</span>
 				<sl-textarea
@@ -143,11 +143,11 @@ export class EditHappVersion extends SignalWatcher(LitElement) {
 	}
 
 	render() {
-		const happVersion = this.happsStore.happVersions
-			.get(this.happVersionHash)
+		const happRelease = this.happsStore.happReleases
+			.get(this.happReleaseHash)
 			.latestVersion.get();
 
-		switch (happVersion.status) {
+		switch (happRelease.status) {
 			case 'pending':
 				return html`<div
 					style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1;"
@@ -157,10 +157,10 @@ export class EditHappVersion extends SignalWatcher(LitElement) {
 			case 'error':
 				return html`<display-error
 					.headline=${msg('Error fetching the happ version')}
-					.error=${happVersion.error}
+					.error=${happRelease.error}
 				></display-error>`;
 			case 'completed':
-				return this.renderEditForm(happVersion.value);
+				return this.renderEditForm(happRelease.value);
 		}
 	}
 

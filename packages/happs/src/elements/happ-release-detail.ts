@@ -33,22 +33,22 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
 import { happsStyles } from '../styles.js';
-import { HappVersion } from '../types.js';
+import { HappRelease } from '../types.js';
 import { triggerFileDownload } from '../utils.js';
-import './edit-happ-version.js';
+import './edit-happ-release.js';
 
 /**
- * @element happ-version-detail
- * @fires happ-version-deleted: detail will contain { happVersionHash }
+ * @element happ-release-detail
+ * @fires happ-release-deleted: detail will contain { happReleaseHash }
  */
 @localized()
-@customElement('happ-version-detail')
-export class HappVersionDetail extends SignalWatcher(LitElement) {
+@customElement('happ-release-detail')
+export class HappReleaseDetail extends SignalWatcher(LitElement) {
 	/**
-	 * REQUIRED. The hash of the HappVersion to show
+	 * REQUIRED. The hash of the HappRelease to show
 	 */
-	@property(hashProperty('happ-version-hash'))
-	happVersionHash!: ActionHash;
+	@property(hashProperty('happ-release-hash'))
+	happReleaseHash!: ActionHash;
 
 	/**
 	 * @internal
@@ -68,7 +68,7 @@ export class HappVersionDetail extends SignalWatcher(LitElement) {
 	@state()
 	downloading = false;
 
-	renderDetail(entryRecord: EntryRecord<HappVersion>) {
+	renderDetail(entryRecord: EntryRecord<HappRelease>) {
 		return html`
 			<sl-card>
 				<div class="column" style="gap: 16px; flex: 1">
@@ -122,11 +122,11 @@ export class HappVersionDetail extends SignalWatcher(LitElement) {
 	}
 
 	render() {
-		const happVersion = this.happsStore.happVersions
-			.get(this.happVersionHash)
+		const happRelease = this.happsStore.happReleases
+			.get(this.happReleaseHash)
 			.latestVersion.get();
 
-		switch (happVersion.status) {
+		switch (happRelease.status) {
 			case 'pending':
 				return html`<div
 					style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1;"
@@ -136,23 +136,23 @@ export class HappVersionDetail extends SignalWatcher(LitElement) {
 			case 'error':
 				return html`<display-error
 					.headline=${msg('Error fetching the happ version')}
-					.error=${happVersion.error}
+					.error=${happRelease.error}
 				></display-error>`;
 			case 'completed':
 				if (this._editing) {
-					return html`<edit-happ-version
-						.happVersionHash=${this.happVersionHash}
-						@happ-version-updated=${async () => {
+					return html`<edit-happ-release
+						.happReleaseHash=${this.happReleaseHash}
+						@happ-release-updated=${async () => {
 							this._editing = false;
 						}}
 						@edit-canceled=${() => {
 							this._editing = false;
 						}}
 						style="display: flex; flex: 1;"
-					></edit-happ-version>`;
+					></edit-happ-release>`;
 				}
 
-				return this.renderDetail(happVersion.value);
+				return this.renderDetail(happRelease.value);
 		}
 	}
 

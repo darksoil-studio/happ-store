@@ -32,7 +32,7 @@ import {
 } from '@tnesh-stack/utils';
 
 import { HappsClient } from './happs-client.js';
-import { HappVersion } from './types.js';
+import { HappRelease } from './types.js';
 import { Happ } from './types.js';
 
 export class HappsZomeMock extends ZomeMock implements AppClient {
@@ -124,34 +124,34 @@ export class HappsZomeMock extends ZomeMock implements AppClient {
 
 		return record;
 	}
-	/** Happ Version */
-	happVersions = new HoloHashMap<
+	/** hApp Release */
+	happReleases = new HoloHashMap<
 		ActionHash,
 		{
 			deletes: Array<SignedActionHashed<Delete>>;
 			revisions: Array<Record>;
 		}
 	>();
-	happVersionsForHapp = new HoloHashMap<ActionHash, Link[]>();
+	happReleasesForHapp = new HoloHashMap<ActionHash, Link[]>();
 
-	async create_happ_version(happVersion: HappVersion): Promise<Record> {
-		const entryHash = hash(happVersion, HashType.ENTRY);
+	async create_happ_release(happRelease: HappRelease): Promise<Record> {
+		const entryHash = hash(happRelease, HashType.ENTRY);
 		const record = await fakeRecord(
 			await fakeCreateAction(entryHash),
-			fakeEntry(happVersion),
+			fakeEntry(happRelease),
 		);
 
-		this.happVersions.set(record.signed_action.hashed.hash, {
+		this.happReleases.set(record.signed_action.hashed.hash, {
 			deletes: [],
 			revisions: [record],
 		});
 
 		const existingHappHash =
-			this.happVersionsForHapp.get(happVersion.happ_hash) || [];
-		this.happVersionsForHapp.set(happVersion.happ_hash, [
+			this.happReleasesForHapp.get(happRelease.happ_hash) || [];
+		this.happReleasesForHapp.set(happRelease.happ_hash, [
 			...existingHappHash,
 			{
-				base: happVersion.happ_hash,
+				base: happRelease.happ_hash,
 				target: record.signed_action.hashed.hash,
 				author: this.myPubKey,
 				timestamp: Date.now() * 1000,
@@ -165,56 +165,56 @@ export class HappsZomeMock extends ZomeMock implements AppClient {
 		return record;
 	}
 
-	async get_latest_happ_version(
-		happVersionHash: ActionHash,
+	async get_latest_happ_release(
+		happReleaseHash: ActionHash,
 	): Promise<Record | undefined> {
-		const happVersion = this.happVersions.get(happVersionHash);
-		return happVersion
-			? happVersion.revisions[happVersion.revisions.length - 1]
+		const happRelease = this.happReleases.get(happReleaseHash);
+		return happRelease
+			? happRelease.revisions[happRelease.revisions.length - 1]
 			: undefined;
 	}
 
-	async get_all_revisions_for_happ_version(
-		happVersionHash: ActionHash,
+	async get_all_revisions_for_happ_release(
+		happReleaseHash: ActionHash,
 	): Promise<Record[] | undefined> {
-		const happVersion = this.happVersions.get(happVersionHash);
-		return happVersion ? happVersion.revisions : undefined;
+		const happRelease = this.happReleases.get(happReleaseHash);
+		return happRelease ? happRelease.revisions : undefined;
 	}
 
-	async get_original_happ_version(
-		happVersionHash: ActionHash,
+	async get_original_happ_release(
+		happReleaseHash: ActionHash,
 	): Promise<Record | undefined> {
-		const happVersion = this.happVersions.get(happVersionHash);
-		return happVersion ? happVersion.revisions[0] : undefined;
+		const happRelease = this.happReleases.get(happReleaseHash);
+		return happRelease ? happRelease.revisions[0] : undefined;
 	}
 
-	async update_happ_version(input: {
-		original_happ_version_hash: ActionHash;
-		previous_happ_version_hash: ActionHash;
-		updated_happ_version: HappVersion;
+	async update_happ_release(input: {
+		original_happ_release_hash: ActionHash;
+		previous_happ_release_hash: ActionHash;
+		updated_happ_release: HappRelease;
 	}): Promise<Record> {
 		const record = await fakeRecord(
 			await fakeUpdateEntry(
-				input.previous_happ_version_hash,
+				input.previous_happ_release_hash,
 				undefined,
 				undefined,
-				fakeEntry(input.updated_happ_version),
+				fakeEntry(input.updated_happ_release),
 			),
-			fakeEntry(input.updated_happ_version),
+			fakeEntry(input.updated_happ_release),
 		);
 
-		this.happVersions
-			.get(input.original_happ_version_hash)
+		this.happReleases
+			.get(input.original_happ_release_hash)
 			.revisions.push(record);
 
-		const happVersion = input.updated_happ_version;
+		const happRelease = input.updated_happ_release;
 
 		const existingHappHash =
-			this.happVersionsForHapp.get(happVersion.happ_hash) || [];
-		this.happVersionsForHapp.set(happVersion.happ_hash, [
+			this.happReleasesForHapp.get(happRelease.happ_hash) || [];
+		this.happReleasesForHapp.set(happRelease.happ_hash, [
 			...existingHappHash,
 			{
-				base: happVersion.happ_hash,
+				base: happRelease.happ_hash,
 				target: record.signed_action.hashed.hash,
 				author: record.signed_action.hashed.content.author,
 				timestamp: record.signed_action.hashed.content.timestamp,
@@ -228,8 +228,8 @@ export class HappsZomeMock extends ZomeMock implements AppClient {
 		return record;
 	}
 
-	async get_happ_versions_for_happ(happHash: ActionHash): Promise<Array<Link>> {
-		return this.happVersionsForHapp.get(happHash) || [];
+	async get_happ_releases_for_happ(happHash: ActionHash): Promise<Array<Link>> {
+		return this.happReleasesForHapp.get(happHash) || [];
 	}
 
 	async get_all_happs(): Promise<Array<Link>> {
@@ -288,19 +288,19 @@ export async function sampleHapp(
 	};
 }
 
-export async function sampleHappVersion(
+export async function sampleHappRelease(
 	client: HappsClient,
-	partialHappVersion: Partial<HappVersion> = {},
-): Promise<HappVersion> {
+	partialHappRelease: Partial<HappRelease> = {},
+): Promise<HappRelease> {
 	return {
 		...{
 			happ_hash:
-				partialHappVersion.happ_hash ||
+				partialHappRelease.happ_hash ||
 				(await client.createHapp(await sampleHapp(client))).actionHash,
 			version: 'Lorem ipsum 2',
 			changes: 'Lorem ipsum 2',
 			web_happ_bundle_hash: await fakeEntryHash(),
 		},
-		...partialHappVersion,
+		...partialHappRelease,
 	};
 }
