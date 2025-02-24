@@ -1,7 +1,7 @@
 import { mdiArrowLeft, mdiClose } from '@mdi/js';
 import { wrapPathInSvg } from '@tnesh-stack/elements';
 import { SignalWatcher } from '@tnesh-stack/signals';
-import { LitElement, TemplateResult, css, html, render } from 'lit';
+import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import { appStyles } from './app-styles.js';

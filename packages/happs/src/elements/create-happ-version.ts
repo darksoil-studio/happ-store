@@ -112,6 +112,7 @@ export class CreateHappVersion extends SignalWatcher(LitElement) {
 				style="flex: 1; gap: 16px;"
 				${onSubmit(fields => this.createHappVersion(fields))}
 			>
+				<span>${msg('Web hApp Bundle')}*</span>
 				<upload-files
 					name="web_happ_bundle_hash"
 					one-file
