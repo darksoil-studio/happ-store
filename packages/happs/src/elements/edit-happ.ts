@@ -106,7 +106,7 @@ export class EditHapp extends SignalWatcher(LitElement) {
 				style="flex: 1; gap: 16px;"
 				${onSubmit(fields => this.updateHapp(currentRecord, fields))}
 			>
-				<span class="title">${msg('Edit Happ')}</span>
+				<span class="title">${msg('Edit hApp')}</span>
 				<sl-input
 					name="name"
 					.label=${msg('Name')}

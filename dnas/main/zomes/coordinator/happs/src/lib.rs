@@ -1,5 +1,6 @@
 pub mod all_happs;
 pub mod happ;
+pub mod happ_unpublished;
 pub mod happ_version;
 pub mod publisher_happs;
 use happs_integrity::*;

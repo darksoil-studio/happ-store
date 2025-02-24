@@ -12,10 +12,13 @@ import { mdiAlertCircleOutline, mdiDelete, mdiPencil } from '@mdi/js';
 import '@shoelace-style/shoelace/dist/components/alert/alert.js';
 import SlAlert from '@shoelace-style/shoelace/dist/components/alert/alert.js';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
+import SlButton from '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@shoelace-style/shoelace/dist/components/card/card.js';
 import '@shoelace-style/shoelace/dist/components/divider/divider.js';
 import '@shoelace-style/shoelace/dist/components/icon-button/icon-button.js';
+import '@shoelace-style/shoelace/dist/components/skeleton/skeleton.js';
 import '@shoelace-style/shoelace/dist/components/spinner/spinner.js';
+import '@shoelace-style/shoelace/dist/components/tag/tag.js';
 import {
 	Routes,
 	hashProperty,
@@ -82,6 +85,145 @@ export class HappDetail extends SignalWatcher(LitElement) {
 		}
 	}
 
+	renderPublishedStatus() {
+		const unpublishedLinks = this.happsStore.happs
+			.get(this.happHash)
+			.unpublishedLinks.get();
+
+		switch (unpublishedLinks.status) {
+			case 'pending':
+				return html` <sl-skeleton effect="pulse"></sl-skeleton> `;
+			case 'error':
+				return html`<display-error
+					.headline=${msg('Error fetching the published status.')}
+					.error=${unpublishedLinks.error}
+				></display-error>`;
+			case 'completed':
+				const isPublished = unpublishedLinks.value.length == 0;
+
+				return html`
+					<sl-card>
+						<div class="column" style="flex: 1; gap: 16px">
+							<div class="row" style="align-items: center; gap: 8px">
+								<span class="title">${msg('Status')}:</span>
+								<span
+									>${isPublished
+										? html`<sl-tag variant="success"
+												>${msg('Published')}</sl-tag
+											> `
+										: html`<sl-tag variant="danger"
+												>${msg('Unpublished')}</sl-tag
+											>`}</span
+								>
+								<span style="flex: 1"></span>
+								${isPublished
+									? html`
+											<sl-dialog .label=${msg('Unpublish hApp')}>
+												<span
+													>${msg(
+														'Are you sure you want to unpublish this hApp?',
+													)}
+												</span>
+												<span
+													>${msg(
+														'Users will not be able to install the hApp anymore.',
+													)}
+												</span>
+												<sl-button
+													slot="footer"
+													@click=${() => {
+														this.shadowRoot?.querySelector('sl-dialog')!.hide();
+													}}
+													>${msg('Cancel')}
+												</sl-button>
+												<sl-button
+													slot="footer"
+													variant="danger"
+													@click=${(e: CustomEvent) => {
+														const button = e.target as SlButton;
+														button.loading = true;
+														this.happsStore.client
+															.unpublishHapp(this.happHash)
+															.catch(e => {
+																notifyError(msg('Error unpublishing hApp.'));
+																console.error(e);
+															})
+															.finally(() => {
+																button.loading = false;
+															});
+													}}
+													>${msg('Unpublish')}
+												</sl-button>
+											</sl-dialog>
+											<sl-button
+												outline
+												variant="danger"
+												@click=${() => {
+													this.shadowRoot?.querySelector('sl-dialog')!.show();
+												}}
+												>${msg('Unpublish')}
+											</sl-button>
+										`
+									: html`
+											<sl-dialog .label=${msg('Publish hApp')}>
+												<span
+													>${msg('Are you sure you want to publish this hApp?')}
+												</span>
+												<span
+													>${msg('All users will be able to install the hApp.')}
+												</span>
+												<sl-button
+													slot="footer"
+													@click=${() => {
+														this.shadowRoot?.querySelector('sl-dialog')!.hide();
+													}}
+													>${msg('Cancel')}
+												</sl-button>
+												<sl-button
+													slot="footer"
+													variant="primary"
+													@click=${(e: CustomEvent) => {
+														const button = e.target as SlButton;
+														button.loading = true;
+														this.happsStore.client
+															.republishHapp(this.happHash)
+															.catch(e => {
+																notifyError(msg('Error publishing hApp.'));
+																console.error(e);
+															})
+															.finally(() => {
+																button.loading = false;
+															});
+													}}
+													>${msg('Publish')}
+												</sl-button>
+											</sl-dialog>
+											<sl-button
+												outline
+												variant="success"
+												@click=${() => {
+													this.shadowRoot?.querySelector('sl-dialog')!.show();
+												}}
+												>${msg('Publish')}
+											</sl-button>
+										`}
+							</div>
+
+							<div class="column" style="gap: 8px;">
+								<span
+									>${isPublished
+										? msg('Users are be able to download and install the hApp.')
+										: msg(
+												'Users are not be able to download and install the hApp.',
+											)}
+								</span>
+							</div>
+						</div>
+					</sl-card>
+				`;
+		}
+	}
+
 	renderDetail(entryRecord: EntryRecord<Happ>) {
 		return html`
 			<div class="column" style="gap: 32px;">
@@ -109,9 +251,11 @@ export class HappDetail extends SignalWatcher(LitElement) {
 					</div>
 				</sl-card>
 
+				${this.renderPublishedStatus()}
+
 				<div class="column">
 					<div class="row" style="align-items: center">
-						<span class="title">${msg('Versions')}</span>
+						<span class="title">${msg('Releases')}</span>
 						<div style="flex: 1"></div>
 						<sl-button
 							variant="primary"
@@ -122,7 +266,7 @@ export class HappDetail extends SignalWatcher(LitElement) {
 										composed: true,
 									}),
 								)}
-							>${msg('New Version')}</sl-button
+							>${msg('New Release')}</sl-button
 						>
 					</div>
 

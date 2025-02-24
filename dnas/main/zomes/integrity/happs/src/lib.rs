@@ -1,3 +1,5 @@
+pub mod happ_unpublished;
+pub use happ_unpublished::*;
 pub mod happ_version;
 pub use happ_version::*;
 pub mod happ;
@@ -17,6 +19,7 @@ pub enum EntryTypes {
 #[hdk_link_types]
 pub enum LinkTypes {
     HappUpdates,
+    HappUnpublished,
     HappToHappVersions,
     HappVersionUpdates,
     AllHapps,
@@ -208,6 +211,9 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
             LinkTypes::PublisherHapps => {
                 validate_create_link_publisher_happs(action, base_address, target_address, tag)
             }
+            LinkTypes::HappUnpublished => {
+                validate_create_link_happ_unpublished(action, base_address, target_address, tag)
+            }
         },
         FlatOp::RegisterDeleteLink {
             link_type,
@@ -246,6 +252,13 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                 tag,
             ),
             LinkTypes::PublisherHapps => validate_delete_link_publisher_happs(
+                action,
+                original_action,
+                base_address,
+                target_address,
+                tag,
+            ),
+            LinkTypes::HappUnpublished => validate_delete_link_happ_unpublished(
                 action,
                 original_action,
                 base_address,
@@ -444,6 +457,12 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                         target_address,
                         tag,
                     ),
+                    LinkTypes::HappUnpublished => validate_create_link_happ_unpublished(
+                        action,
+                        base_address,
+                        target_address,
+                        tag,
+                    ),
                 },
                 // Complementary validation to the `RegisterDeleteLink` Op, in which the record itself is validated
                 // If you want to optimize performance, you can remove the validation for an entry type here and keep it in `RegisterDeleteLink`
@@ -504,6 +523,13 @@ pub fn validate(op: Op) -> ExternResult<ValidateCallbackResult> {
                             create_link.tag,
                         ),
                         LinkTypes::PublisherHapps => validate_delete_link_publisher_happs(
+                            action,
+                            create_link.clone(),
+                            base_address,
+                            create_link.target_address,
+                            create_link.tag,
+                        ),
+                        LinkTypes::HappUnpublished => validate_delete_link_happ_unpublished(
                             action,
                             create_link.clone(),
                             base_address,

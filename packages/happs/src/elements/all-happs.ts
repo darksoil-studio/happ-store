@@ -6,7 +6,7 @@ import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 import '@shoelace-style/shoelace/dist/components/spinner/spinner.js';
 import { wrapPathInSvg } from '@tnesh-stack/elements';
 import '@tnesh-stack/elements/dist/elements/display-error.js';
-import { SignalWatcher, joinAsyncMap } from '@tnesh-stack/signals';
+import { SignalWatcher, joinAsync, joinAsyncMap } from '@tnesh-stack/signals';
 import { mapValues, pickBy } from '@tnesh-stack/utils';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -68,14 +68,18 @@ export class AllHapps extends SignalWatcher(LitElement) {
 		const allHapps = this.happsStore.allHapps.get();
 		if (allHapps.status !== 'completed') return allHapps;
 
-		const happsVersions = joinAsyncMap(
-			mapValues(allHapps.value, happ => happ.happVersions.get()),
+		const happsVersionsAndUnpublishedLinks = joinAsyncMap(
+			mapValues(allHapps.value, happ =>
+				joinAsync([happ.happVersions.get(), happ.unpublishedLinks.get()]),
+			),
 		);
-		if (happsVersions.status !== 'completed') return happsVersions;
+		if (happsVersionsAndUnpublishedLinks.status !== 'completed')
+			return happsVersionsAndUnpublishedLinks;
 
 		const happsWithVersions = pickBy(
-			happsVersions.value,
-			versions => versions.size > 0,
+			happsVersionsAndUnpublishedLinks.value,
+			([versions, unpublishedLinks]) =>
+				versions.size > 0 && unpublishedLinks.length == 0,
 		);
 
 		return {

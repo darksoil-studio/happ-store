@@ -40,6 +40,12 @@ export class HappsStore {
 					links.map(l => l.target),
 				),
 		),
+		unpublishedLinks: liveLinksSignal(
+			this.client,
+			happHash,
+			() => this.client.getHappUnpublishedLinks(happHash),
+			'HappUnpublished',
+		),
 	}));
 
 	/** Happ Version */
