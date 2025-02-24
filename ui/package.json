@@ -12,17 +12,18 @@
     "localize:build": "lit-localize build"
   },
   "dependencies": {
-    "@darksoil-studio/happs-zome": "workspace:^0.400.0",
     "@darksoil-studio/file-storage-zome": "0.400.0-rev.927114d19900baab67706d08c7159fc1635f42a7",
+    "@darksoil-studio/happs-zome": "workspace:^0.400.0",
     "@holochain/client": "^0.18.0",
-    "@tnesh-stack/elements": "^0.400.0",
-    "@tnesh-stack/signals": "^0.400.0",
-    "@tnesh-stack/utils": "^0.400.0",
+    "@lit-labs/observers": "^2.0.5",
     "@lit/context": "^1.0.0",
     "@lit/localize": "^0.12.0",
     "@mdi/js": "^7.2.0",
     "@msgpack/msgpack": "^2.8.0",
     "@shoelace-style/shoelace": "^2.11.0",
+    "@tnesh-stack/elements": "^0.400.0",
+    "@tnesh-stack/signals": "^0.400.0",
+    "@tnesh-stack/utils": "^0.400.0",
     "lit": "^3.0.0",
     "urlpattern-polyfill": "^10.0.0"
   },
@@ -30,8 +31,8 @@
     "@custom-elements-manifest/analyzer": "^0.10.3",
     "@lit/localize-tools": "^0.6.3",
     "bestzip": "^2.2.0",
-    "typescript": "^5.4.5",
     "tslib": "^2.6.2",
+    "typescript": "^5.4.5",
     "vite": "^4.0.0"
   }
 }

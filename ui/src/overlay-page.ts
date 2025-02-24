@@ -1,10 +1,13 @@
+import { consume } from '@lit/context';
 import { mdiArrowLeft, mdiClose } from '@mdi/js';
 import { wrapPathInSvg } from '@tnesh-stack/elements';
 import { SignalWatcher } from '@tnesh-stack/signals';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 import { appStyles } from './app-styles.js';
+import { isMobileContext } from './context.js';
 
 @customElement('overlay-page')
 export class OverlayPage extends SignalWatcher(LitElement) {
@@ -13,6 +16,10 @@ export class OverlayPage extends SignalWatcher(LitElement) {
 
 	@property()
 	icon: 'back' | 'close' = 'close';
+
+	@property()
+	@consume({ context: isMobileContext })
+	isMobile: boolean = false;
 
 	mdiIcon() {
 		if (this.icon === 'back') return mdiArrowLeft;
@@ -29,15 +36,26 @@ export class OverlayPage extends SignalWatcher(LitElement) {
 						.src=${wrapPathInSvg(this.mdiIcon())}
 					></sl-icon-button>
 					<span class="title">${this.title}</span>
+					<span style="flex: 1"></span>
+					<div class="row" style="gap: 16px">
+						<slot name="action"></slot>
+					</div>
 				</div>
 				<div class="flex-scrollable-parent" style="flex:1">
 					<div class="flex-scrollable-container" style="flex:1">
 						<div class="flex-scrollable-y" style="height: 100%;">
 							<div
 								class="column"
-								style="min-height: calc(100% - 32px); margin: 16px; align-items: center"
+								style="min-height: calc(100% - 32px); margin: 16px; align-items: center;"
 							>
-								<slot></slot>
+								<div
+									class="column"
+									style=${styleMap({
+										'min-width': this.isMobile ? '100%' : '600px',
+									})}
+								>
+									<slot></slot>
+								</div>
 							</div>
 						</div>
 					</div>

@@ -20,8 +20,8 @@ export async function triggerFileDownload(
 }
 
 export async function decodeBundle<T>(file: File): Promise<T> {
-	const bytes = await file.bytes();
-	const expanded = gunzipSync(bytes);
+	const bytes = await file.arrayBuffer();
+	const expanded = gunzipSync(new Uint8Array(bytes));
 	return decode(expanded) as T;
 }
 

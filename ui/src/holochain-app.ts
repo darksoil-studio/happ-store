@@ -9,6 +9,7 @@ import {
 	decodeHashFromBase64,
 	encodeHashToBase64,
 } from '@holochain/client';
+import { ResizeController } from '@lit-labs/observers/resize-controller.js';
 import { provide } from '@lit/context';
 import { localized, msg } from '@lit/localize';
 import { mdiArrowLeft } from '@mdi/js';
@@ -23,9 +24,11 @@ import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 import { appStyles } from './app-styles.js';
-import { adminWebsocketContext, rootRouterContext } from './context.js';
+import { isMobileContext, rootRouterContext } from './context.js';
 import './home-page.js';
 import './publisher-dashboard.js';
+
+export const MOBILE_WIDTH_PX = 600;
 
 @localized()
 @customElement('holochain-app')
@@ -74,7 +77,6 @@ export class HolochainApp extends SignalWatcher(LitElement) {
 					@close-requested=${() => this.router.goto('/publisher-dashboard')}
 				>
 					<create-happ
-						style="min-width: 600px"
 						@happ-created=${() => this.router.goto('/publisher-dashboard')}
 					>
 					</create-happ>
@@ -96,7 +98,6 @@ export class HolochainApp extends SignalWatcher(LitElement) {
 						@close-requested=${() => this.router.goto('/publisher-dashboard')}
 					>
 						<happ-detail
-							style="width: 600px"
 							.happHash=${decodeHashFromBase64(params.happHash!)}
 							@new-happ-release-selected=${(e: CustomEvent) =>
 								this.router.goto(`/happ/${params.happHash}/new-release`)}
@@ -118,7 +119,6 @@ export class HolochainApp extends SignalWatcher(LitElement) {
 					@close-requested=${() => this.router.goto(`/happ/${params.happHash}`)}
 				>
 					<create-happ-release
-						style="width: 600px"
 						.happHash=${decodeHashFromBase64(params.happHash!)}
 						@happ-release-created=${(e: CustomEvent) =>
 							this.router.goto(
@@ -136,7 +136,6 @@ export class HolochainApp extends SignalWatcher(LitElement) {
 					@close-requested=${() => this.router.goto(`/happ/${params.happHash}`)}
 				>
 					<happ-release-detail
-						style="width: 600px"
 						.happReleaseHash=${decodeHashFromBase64(params.happReleaseHash!)}
 					></happ-release-detail>
 				</overlay-page>`,
@@ -147,7 +146,16 @@ export class HolochainApp extends SignalWatcher(LitElement) {
 		},
 	]);
 
+	@provide({ context: isMobileContext })
+	@property()
+	_isMobile: boolean = false;
+
 	async firstUpdated() {
+		new ResizeController(this, {
+			callback: () => {
+				this._isMobile = this.getBoundingClientRect().width < MOBILE_WIDTH_PX;
+			},
+		});
 		try {
 			this._client = await AppWebsocket.connect();
 		} catch (e: unknown) {

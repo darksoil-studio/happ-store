@@ -1,4 +1,5 @@
 import { ActionHash, AgentPubKey, EntryHash, Record } from '@holochain/client';
+import { ResizeController } from '@lit-labs/observers/resize-controller.js';
 import { consume } from '@lit/context';
 import { localized, msg } from '@lit/localize';
 import { mdiInformationOutline } from '@mdi/js';
@@ -10,6 +11,7 @@ import { SignalWatcher, joinAsync, joinAsyncMap } from '@tnesh-stack/signals';
 import { mapValues, pickBy } from '@tnesh-stack/utils';
 import { LitElement, css, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 import { happsStoreContext } from '../context.js';
 import { HappsStore } from '../happs-store.js';
@@ -27,6 +29,19 @@ export class AllHapps extends SignalWatcher(LitElement) {
 	 */
 	@consume({ context: happsStoreContext, subscribe: true })
 	happsStore!: HappsStore;
+
+	@state()
+	layout: 'rows' | 'single-column' = 'rows';
+
+	firstUpdated() {
+		new ResizeController(this, {
+			callback: () => {
+				this.layout =
+					this.getBoundingClientRect().width < 600 ? 'single-column' : 'rows';
+				console.log(this.getBoundingClientRect().width);
+			},
+		});
+	}
 
 	renderList(hashes: Array<ActionHash>) {
 		if (hashes.length === 0) {
@@ -53,7 +68,10 @@ export class AllHapps extends SignalWatcher(LitElement) {
 							${hashes.map(
 								hash =>
 									html`<manage-happ
-										style="height: 200px; width: 300px"
+										style=${styleMap({
+											height: '200px',
+											width: this.layout === 'rows' ? '300px' : '100%',
+										})}
 										.happHash=${hash}
 									></manage-happ>`,
 							)}
