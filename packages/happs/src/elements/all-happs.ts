@@ -38,7 +38,6 @@ export class AllHapps extends SignalWatcher(LitElement) {
 			callback: () => {
 				this.layout =
 					this.getBoundingClientRect().width < 600 ? 'single-column' : 'rows';
-				console.log(this.getBoundingClientRect().width);
 			},
 		});
 	}

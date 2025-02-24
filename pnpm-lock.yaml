@@ -45,8 +45,8 @@ importers:
   packages/happs:
     dependencies:
       '@darksoil-studio/file-storage-zome':
-        specifier: 0.400.0-rev.927114d19900baab67706d08c7159fc1635f42a7
-        version: 0.400.0-rev.927114d19900baab67706d08c7159fc1635f42a7(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
+        specifier: 0.400.0-rev.6c851601e203a8927d896b5026b558f61badfb77
+        version: 0.400.0-rev.6c851601e203a8927d896b5026b558f61badfb77(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
       '@holochain/client':
         specifier: ^0.18.0
         version: 0.18.0
@@ -136,8 +136,8 @@ importers:
   ui:
     dependencies:
       '@darksoil-studio/file-storage-zome':
-        specifier: 0.400.0-rev.927114d19900baab67706d08c7159fc1635f42a7
-        version: 0.400.0-rev.927114d19900baab67706d08c7159fc1635f42a7(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
+        specifier: 0.400.0-rev.6c851601e203a8927d896b5026b558f61badfb77
+        version: 0.400.0-rev.6c851601e203a8927d896b5026b558f61badfb77(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
       '@darksoil-studio/happs-zome':
         specifier: workspace:^0.400.0
         version: link:../packages/happs
@@ -284,8 +284,8 @@ packages:
   '@dabh/diagnostics@2.0.3':
     resolution: {integrity: sha512-hrlQOIi7hAfzsMqlGSFyVucrx38O+j6wiGOf//H2ecvIEqYN4ADBSS2iLMh5UFyDunCNniUIPk/q3riFv45xRA==}
 
-  '@darksoil-studio/file-storage-zome@0.400.0-rev.927114d19900baab67706d08c7159fc1635f42a7':
-    resolution: {integrity: sha512-d9kK8Qzt/cyeSD4xVwDYxgH6PlScp5a8qXLLllsZyA9PdBrcz3kjzkQTg8I2uloNxq9RQ/AABEFtiByng4claQ==}
+  '@darksoil-studio/file-storage-zome@0.400.0-rev.6c851601e203a8927d896b5026b558f61badfb77':
+    resolution: {integrity: sha512-8ydiv7BsWN731NFKO7h/NW80DL8qSTz4oLBp/1BDCtXqnbWGpwc2fb6LBq1ZQJ94DoBKkMi4Lc3wryyJbK2uNw==}
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -2457,7 +2457,7 @@ snapshots:
       enabled: 2.0.0
       kuler: 2.0.0
 
-  '@darksoil-studio/file-storage-zome@0.400.0-rev.927114d19900baab67706d08c7159fc1635f42a7(@floating-ui/utils@0.2.9)(@types/react@19.0.8)':
+  '@darksoil-studio/file-storage-zome@0.400.0-rev.6c851601e203a8927d896b5026b558f61badfb77(@floating-ui/utils@0.2.9)(@types/react@19.0.8)':
     dependencies:
       '@holochain/client': 0.18.0
       '@lit-labs/task': 2.1.2

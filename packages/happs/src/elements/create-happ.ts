@@ -117,7 +117,7 @@ export class CreateHapp extends SignalWatcher(LitElement) {
 				></sl-textarea>
 
 				<sl-button variant="primary" type="submit" .loading=${this.committing}
-					>${msg('Create Happ')}</sl-button
+					>${msg('Create hApp')}</sl-button
 				>
 			</form>
 		</sl-card>`;
