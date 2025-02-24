@@ -226,7 +226,7 @@ export class HappDetail extends SignalWatcher(LitElement) {
 
 	renderDetail(entryRecord: EntryRecord<Happ>) {
 		return html`
-			<div class="column" style="gap: 32px;">
+			<div class="column" style="gap: 16px;">
 				<sl-card>
 					<div class="column" style="gap: 16px; flex: 1">
 						<div class="row" style="gap: 16px; flex: 1">
@@ -253,7 +253,7 @@ export class HappDetail extends SignalWatcher(LitElement) {
 
 				${this.renderPublishedStatus()}
 
-				<div class="column">
+				<div class="column" style="margin-top: 16px">
 					<div class="row" style="align-items: center">
 						<span class="title">${msg('Releases')}</span>
 						<div style="flex: 1"></div>
