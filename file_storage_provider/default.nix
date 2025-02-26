@@ -16,13 +16,13 @@
       };
 
     packages.file_storage_provider_aon_debug =
-      inputs.aon.outputs.builders.${system}.aon-for-happ {
-        happ_bundle = packages.file_storage_provider_happ.meta.debug;
+      inputs.aon.outputs.builders.${system}.aon-for-happs {
+        happs = [ packages.file_storage_provider_happ.meta.debug ];
       };
 
     packages.file_storage_provider_aon =
-      inputs.aon.outputs.builders.${system}.aon-for-happ {
-        happ_bundle = packages.file_storage_provider_happ;
+      inputs.aon.outputs.builders.${system}.aon-for-happs {
+        happs = [ packages.file_storage_provider_happ ];
       };
   };
 }
