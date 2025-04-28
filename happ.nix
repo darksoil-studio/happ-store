@@ -21,14 +21,14 @@
         (builtins.fromJSON (builtins.readFile ./ui/package.json)).version;
       pname = "happ-store-ui";
       pnpmWorkspaces = [ "ui" "@darksoil-studio/happs-zome" ];
-      src = (inputs.holochain-nix-builders.outputs.lib.cleanPnpmDepsSource {
-        inherit lib;
-      }) ./.;
+      src =
+        (inputs.scaffolding.outputs.lib.cleanPnpmDepsSource { inherit lib; })
+        ./.;
 
       nativeBuildInputs = with pkgs; [ nodejs pnpm_9.configHook git ];
       pnpmDeps = pkgs.pnpm_9.fetchDeps {
         inherit (finalAttrs) pnpmWorkspaces version pname src;
-        hash = "sha256-YMiFLzqCRTCsipXktQKWBcdv4reu2zj1ZXGhTsTI0aw=";
+        hash = "sha256-WMhQdbuGtC0YJ4QtFgsUYMay0fKsTfKyoCNW9tAt1yg=";
         buildInputs = [ pkgs.git ];
       };
       buildPhase = ''
