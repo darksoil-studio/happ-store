@@ -2809,11 +2809,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1745579676,
-        "narHash": "sha256-nU1DuIrx3Pc5mIJwt87ZsQEIaqClLSiZ26qdzEnyeIk=",
+        "lastModified": 1745850857,
+        "narHash": "sha256-zr2kb/jpqGpV2krh2jhT175q0z4t2jMPFruRh8SASJM=",
         "owner": "darksoil-studio",
         "repo": "holochain-nix-builders",
-        "rev": "22b9241737ee07dff0fe668346762fd5dc82bf55",
+        "rev": "de2aed71f76f7cec27bb94823d38413675bef195",
         "type": "github"
       },
       "original": {
