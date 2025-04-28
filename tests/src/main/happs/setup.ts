@@ -1,9 +1,9 @@
 import { HappsClient, HappsStore } from '@darksoil-studio/happs-zome';
+import { EntryRecord } from '@darksoil-studio/holochain-utils';
 import {
 	ActionHash,
 	AgentPubKey,
 	AppBundleSource,
-	AppCallZomeRequest,
 	AppWebsocket,
 	EntryHash,
 	NewEntryAction,
@@ -14,15 +14,16 @@ import {
 	fakeDnaHash,
 	fakeEntryHash,
 } from '@holochain/client';
-import { Player, Scenario } from '@holochain/tryorama';
+import { Player, Scenario, pause } from '@holochain/tryorama';
 import { encode } from '@msgpack/msgpack';
-import { EntryRecord } from '@darksoil-studio/holochain-utils';
 
 import { appPath } from '../../app-path.js';
 
 export async function setup(scenario: Scenario, numPlayers = 2) {
 	const players = await scenario.addPlayersWithApps(
-		new Array(numPlayers).fill({ appBundleSource: { path: appPath } }),
+		new Array(numPlayers).fill({
+			appBundleSource: { type: 'path', value: appPath },
+		}),
 	);
 	const playersAndStores = await Promise.all(players.map(setupStore));
 
@@ -62,7 +63,7 @@ function patchCallZome(appWs: AppWebsocket) {
 	appWs.callZome = async req => {
 		try {
 			const result = await callZome(req);
-			return result;
+			return result as any;
 		} catch (e) {
 			if (
 				!e.toString().includes('Socket is not open') &&
