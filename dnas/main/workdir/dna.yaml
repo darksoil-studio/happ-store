@@ -3,7 +3,6 @@ name: main
 integrity:
   network_seed: null
   properties: null
-  origin_time: 1738677483083641
   zomes:
   - name: happs_integrity
     hash: null
@@ -29,4 +28,3 @@ coordinator:
     dependencies:
     - name: file_storage_gateway_integrity
     dylib: null
-lineage: []

@@ -3,9 +3,9 @@ import { AppClient } from '@holochain/client';
 import { consume } from '@lit/context';
 import { msg } from '@lit/localize';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
-import { Router, Routes, appClientContext } from '@tnesh-stack/elements';
-import '@tnesh-stack/elements/dist/elements/display-error.js';
-import { AsyncResult, SignalWatcher } from '@tnesh-stack/signals';
+import { Router, Routes, appClientContext } from '@darksoil-studio/holochain-elements';
+import '@darksoil-studio/holochain-elements/dist/elements/display-error.js';
+import { AsyncResult, SignalWatcher } from '@darksoil-studio/holochain-signals';
 import { LitElement, css, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 

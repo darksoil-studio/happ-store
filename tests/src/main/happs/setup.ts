@@ -16,7 +16,7 @@ import {
 } from '@holochain/client';
 import { Player, Scenario } from '@holochain/tryorama';
 import { encode } from '@msgpack/msgpack';
-import { EntryRecord } from '@tnesh-stack/utils';
+import { EntryRecord } from '@darksoil-studio/holochain-utils';
 
 import { appPath } from '../../app-path.js';
 

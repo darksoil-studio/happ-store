@@ -29,7 +29,7 @@ import {
 	fakeUpdateEntry,
 	hash,
 	pickBy,
-} from '@tnesh-stack/utils';
+} from '@darksoil-studio/holochain-utils';
 
 import { HappsClient } from './happs-client.js';
 import { HappRelease } from './types.js';

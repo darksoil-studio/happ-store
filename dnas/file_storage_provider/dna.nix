@@ -14,7 +14,7 @@
   # ;
   perSystem = { inputs', self', lib, system, ... }: {
     packages.file_storage_provider_dna =
-      inputs.tnesh-stack.outputs.builders.${system}.dna {
+      inputs.holochain-nix-builders.outputs.builders.${system}.dna {
         dnaManifest = ./workdir/dna.yaml;
         zomes = {
           file_storage_integrity =

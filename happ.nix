@@ -7,7 +7,7 @@
 
   perSystem = { inputs', pkgs, lib, self', system, ... }: rec {
     packages.happ-store_happ =
-      inputs.tnesh-stack.outputs.builders.${system}.happ {
+      inputs.holochain-nix-builders.outputs.builders.${system}.happ {
         happManifest = ./workdir/happ.yaml;
         dnas = {
           # Include here the DNA packages for this hApp, e.g.:
@@ -21,14 +21,14 @@
         (builtins.fromJSON (builtins.readFile ./ui/package.json)).version;
       pname = "happ-store-ui";
       pnpmWorkspaces = [ "ui" "@darksoil-studio/happs-zome" ];
-      src =
-        (inputs.tnesh-stack.outputs.lib.cleanPnpmDepsSource { inherit lib; })
-        ./.;
+      src = (inputs.holochain-nix-builders.outputs.lib.cleanPnpmDepsSource {
+        inherit lib;
+      }) ./.;
 
       nativeBuildInputs = with pkgs; [ nodejs pnpm_9.configHook git ];
       pnpmDeps = pkgs.pnpm_9.fetchDeps {
         inherit (finalAttrs) pnpmWorkspaces version pname src;
-        hash = "sha256-YMiFLzqCRTCsepXktQKWBcdv4reu2zj1ZXGhTsTI0aw=";
+        hash = "sha256-YMiFLzqCRTCsipXktQKWBcdv4reu2zj1ZXGhTsTI0aw=";
         buildInputs = [ pkgs.git ];
       };
       buildPhase = ''
@@ -43,7 +43,7 @@
     });
 
     packages.happ-store_webhapp =
-      inputs.tnesh-stack.outputs.builders.${system}.webhapp {
+      inputs.holochain-nix-builders.outputs.builders.${system}.webhapp {
         name = "happ-store";
         happ = packages.happ-store_happ;
         ui = packages.ui;

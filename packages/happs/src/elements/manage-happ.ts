@@ -25,15 +25,15 @@ import {
 	notifyError,
 	sharedStyles,
 	wrapPathInSvg,
-} from '@tnesh-stack/elements';
-import '@tnesh-stack/elements/dist/elements/display-error.js';
+} from '@darksoil-studio/holochain-elements';
+import '@darksoil-studio/holochain-elements/dist/elements/display-error.js';
 import {
 	SignalWatcher,
 	fromPromise,
 	joinAsync,
 	joinAsyncMap,
-} from '@tnesh-stack/signals';
-import { EntryRecord, mapValues } from '@tnesh-stack/utils';
+} from '@darksoil-studio/holochain-signals';
+import { EntryRecord, mapValues } from '@darksoil-studio/holochain-utils';
 import { LitElement, css, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 

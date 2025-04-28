@@ -3,7 +3,6 @@ name: file_storage_provider
 integrity:
   network_seed: null
   properties: null
-  origin_time: 1738677534535561
   zomes:
   - name: file_storage_integrity
     hash: null
@@ -18,4 +17,3 @@ coordinator:
     dependencies:
     - name: file_storage_integrity
     dylib: null
-lineage: []

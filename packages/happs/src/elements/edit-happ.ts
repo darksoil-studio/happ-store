@@ -18,9 +18,9 @@ import {
 	onSubmit,
 	sharedStyles,
 	wrapPathInSvg,
-} from '@tnesh-stack/elements';
-import { SignalWatcher, toPromise } from '@tnesh-stack/signals';
-import { EntryRecord } from '@tnesh-stack/utils';
+} from '@darksoil-studio/holochain-elements';
+import { SignalWatcher, toPromise } from '@darksoil-studio/holochain-signals';
+import { EntryRecord } from '@darksoil-studio/holochain-utils';
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { repeat } from 'lit/directives/repeat.js';

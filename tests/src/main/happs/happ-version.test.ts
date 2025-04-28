@@ -8,9 +8,9 @@ import {
 } from '@holochain/client';
 import { dhtSync, runScenario } from '@holochain/tryorama';
 import { decode } from '@msgpack/msgpack';
-import { toPromise } from '@tnesh-stack/signals';
-import { EntryRecord } from '@tnesh-stack/utils';
-import { cleanNodeDecoding } from '@tnesh-stack/utils/dist/clean-node-decoding.js';
+import { toPromise } from '@darksoil-studio/holochain-signals';
+import { EntryRecord } from '@darksoil-studio/holochain-utils';
+import { cleanNodeDecoding } from '@darksoil-studio/holochain-utils/dist/clean-node-decoding.js';
 import { assert, test } from 'vitest';
 
 import { setup } from './setup.js';

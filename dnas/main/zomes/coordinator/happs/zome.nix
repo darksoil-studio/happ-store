@@ -1,17 +1,13 @@
 { inputs, ... }:
 
 {
-  perSystem =
-    { inputs'
-    , self'
-    , system
-    , ...
-    }: {
-      packages.happs = inputs.tnesh-stack.outputs.builders.${system}.rustZome {
+  perSystem = { inputs', self', system, ... }: {
+    packages.happs =
+      inputs.holochain-nix-builders.outputs.builders.${system}.rustZome {
         workspacePath = inputs.self.outPath;
         crateCargoToml = ./Cargo.toml;
       };
 
-    };
+  };
 }
 

@@ -8,10 +8,10 @@ import {
 	hashProperty,
 	sharedStyles,
 	wrapPathInSvg,
-} from '@tnesh-stack/elements';
-import '@tnesh-stack/elements/dist/elements/display-error.js';
-import { AsyncComputed, SignalWatcher } from '@tnesh-stack/signals';
-import { EntryRecord, slice } from '@tnesh-stack/utils';
+} from '@darksoil-studio/holochain-elements';
+import '@darksoil-studio/holochain-elements/dist/elements/display-error.js';
+import { AsyncComputed, SignalWatcher } from '@darksoil-studio/holochain-signals';
+import { EntryRecord, slice } from '@darksoil-studio/holochain-utils';
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 

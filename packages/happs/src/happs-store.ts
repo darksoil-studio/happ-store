@@ -1,4 +1,3 @@
-import { ActionHash, AgentPubKey } from '@holochain/client';
 import {
 	allRevisionsOfEntrySignal,
 	collectionSignal,
@@ -7,8 +6,9 @@ import {
 	latestVersionOfEntrySignal,
 	liveLinksSignal,
 	pipe,
-} from '@tnesh-stack/signals';
-import { MemoHoloHashMap, slice } from '@tnesh-stack/utils';
+} from '@darksoil-studio/holochain-signals';
+import { MemoHoloHashMap, slice } from '@darksoil-studio/holochain-utils';
+import { ActionHash, AgentPubKey } from '@holochain/client';
 
 import { HappsClient } from './happs-client.js';
 
@@ -33,6 +33,7 @@ export class HappsStore {
 				happHash,
 				() => this.client.getHappReleasesForHapp(happHash),
 				'HappToHappReleases',
+				3000,
 			),
 			links =>
 				slice(
@@ -65,7 +66,12 @@ export class HappsStore {
 	/** All Happs */
 
 	allHapps = pipe(
-		collectionSignal(this.client, () => this.client.getAllHapps(), 'AllHapps'),
+		collectionSignal(
+			this.client,
+			() => this.client.getAllHapps(),
+			'AllHapps',
+			3000,
+		),
 		allHapps =>
 			slice(
 				this.happs,

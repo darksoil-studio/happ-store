@@ -14,7 +14,7 @@ import {
 	EntryRecord,
 	ZomeClient,
 	isSignalFromCellWithRole,
-} from '@tnesh-stack/utils';
+} from '@darksoil-studio/holochain-utils';
 
 import { HappRelease } from './types.js';
 import { Happ } from './types.js';

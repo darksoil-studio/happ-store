@@ -4,7 +4,7 @@
 
   perSystem = { inputs', lib, self', system, ... }: rec {
     packages.file_storage_provider_happ =
-      inputs.tnesh-stack.outputs.builders.${system}.happ {
+      inputs.holochain-nix-builders.outputs.builders.${system}.happ {
         happManifest = ./workdir/happ.yaml;
         dnas = {
           # Include here the DNA packages for this hApp, e.g.:

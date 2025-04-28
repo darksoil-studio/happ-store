@@ -14,7 +14,7 @@ pub fn create_happ(happ: Happ) -> ExternResult<Record> {
         LinkTypes::AllHapps,
         (),
     )?;
-    let my_agent_pub_key = agent_info()?.agent_latest_pubkey;
+    let my_agent_pub_key = agent_info()?.agent_initial_pubkey;
     create_link(
         my_agent_pub_key,
         happ_hash.clone(),

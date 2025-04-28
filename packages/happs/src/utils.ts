@@ -1,7 +1,7 @@
 import { FileStorageClient } from '@darksoil-studio/file-storage-zome';
 import { EntryHash } from '@holochain/client';
 import { decode } from '@msgpack/msgpack';
-import { AsyncSignal, AsyncState, Signal } from '@tnesh-stack/signals';
+import { AsyncSignal, AsyncState, Signal } from '@darksoil-studio/holochain-signals';
 import { gunzipSync } from 'fflate';
 
 import { listApps } from './commands';
