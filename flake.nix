@@ -8,7 +8,8 @@
     flake-parts.follows = "holonix/flake-parts";
 
     scaffolding.url = "github:darksoil-studio/scaffolding/main-0.5";
-    holochain-nix-builders.url = "github:darksoil-studio/holochain-nix-builders/main-0.5";
+    holochain-nix-builders.url =
+      "github:darksoil-studio/holochain-nix-builders/main-0.5";
     playground.url = "github:darksoil-studio/holochain-playground/main-0.5";
     p2p-shipyard.url = "github:darksoil-studio/p2p-shipyard/main-0.5";
     file-storage.url = "github:darksoil-studio/file-storage/main-0.5";
