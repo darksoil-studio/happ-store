@@ -21,9 +21,10 @@ import { appPath } from '../../app-path.js';
 
 export async function setup(scenario: Scenario, numPlayers = 2) {
 	const players = await scenario.addPlayersWithApps(
-		new Array(numPlayers).fill({
+		{
 			appBundleSource: { type: 'path', value: appPath },
-		}),
+		},
+		numPlayers,
 	);
 	const playersAndStores = await Promise.all(players.map(setupStore));
 

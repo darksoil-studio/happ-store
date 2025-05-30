@@ -11,7 +11,8 @@
     holochain-nix-builders.url =
       "github:darksoil-studio/holochain-nix-builders/main-0.5";
     playground.url = "github:darksoil-studio/holochain-playground/main-0.5";
-    p2p-shipyard.url = "github:darksoil-studio/p2p-shipyard/main-0.5";
+    tauri-plugin-holochain.url =
+      "github:darksoil-studio/tauri-plugin-holochain/develop";
     file-storage.url = "github:darksoil-studio/file-storage/main-0.5";
     aon.url = "github:darksoil-studio/always-online-nodes";
   };
@@ -40,7 +41,7 @@
           ];
           packages = [
             inputs'.scaffolding.packages.hc-scaffold-happ
-            inputs'.p2p-shipyard.packages.hc-pilot
+            inputs'.tauri-plugin-holochain.packages.hc-pilot
             inputs'.playground.packages.hc-playground
           ];
         };
