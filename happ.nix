@@ -28,7 +28,7 @@
       nativeBuildInputs = with pkgs; [ nodejs pnpm_9.configHook git ];
       pnpmDeps = pkgs.pnpm_9.fetchDeps {
         inherit (finalAttrs) pnpmWorkspaces version pname src;
-        hash = "sha256-WMhQdbuGtC0YJ4QtFgsUYMay0fKsTfKyoCNW9tAt1yg=";
+        hash = "sha256-r+3gQ4AY29UMWZcyFFjWiJuCX5/gddK2q1I7CBeVdNI=";
         buildInputs = [ pkgs.git ];
       };
       buildPhase = ''
