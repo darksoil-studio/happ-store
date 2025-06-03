@@ -14,13 +14,13 @@ import {
 	fakeDnaHash,
 	fakeEntryHash,
 } from '@holochain/client';
-import { Player, Scenario, pause } from '@holochain/tryorama';
+import { Player, PlayerApp, Scenario, pause } from '@holochain/tryorama';
 import { encode } from '@msgpack/msgpack';
 
 import { appPath } from '../../app-path.js';
 
 export async function setup(scenario: Scenario, numPlayers = 2) {
-	const players = await scenario.addPlayersWithApps(
+	const players = await scenario.addPlayersWithSameApp(
 		{
 			appBundleSource: { type: 'path', value: appPath },
 		},
@@ -35,7 +35,7 @@ export async function setup(scenario: Scenario, numPlayers = 2) {
 	return playersAndStores;
 }
 
-async function setupStore(player: Player) {
+async function setupStore(player: PlayerApp) {
 	patchCallZome(player.appWs as AppWebsocket);
 	await player.conductor
 		.adminWs()
