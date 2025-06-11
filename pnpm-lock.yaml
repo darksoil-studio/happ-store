@@ -136,8 +136,8 @@ importers:
   ui:
     dependencies:
       '@darksoil-studio/file-storage-zome':
-        specifier: 0.500.0-rev.27308361df4709f7cd7e2bc441aeb34154b6c91c
-        version: 0.500.0-rev.27308361df4709f7cd7e2bc441aeb34154b6c91c(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
+        specifier: 0.500.0-rev.358b6eed8495aadf4cf16383bfe443d6ab66d859
+        version: 0.500.0-rev.358b6eed8495aadf4cf16383bfe443d6ab66d859(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
       '@darksoil-studio/happs-zome':
         specifier: workspace:^0.500.0
         version: link:../packages/happs
@@ -284,8 +284,8 @@ packages:
   '@dabh/diagnostics@2.0.3':
     resolution: {integrity: sha512-hrlQOIi7hAfzsMqlGSFyVucrx38O+j6wiGOf//H2ecvIEqYN4ADBSS2iLMh5UFyDunCNniUIPk/q3riFv45xRA==}
 
-  '@darksoil-studio/file-storage-zome@0.500.0-rev.27308361df4709f7cd7e2bc441aeb34154b6c91c':
-    resolution: {integrity: sha512-cjirLm3jPTRzuz0RxC4i9eXyr0pA6a7905Feg5lDvPuwf89QbOKPGm+O8bjLENBGFEdlUCigeUnP6m5FA+Z8Mg==}
+  '@darksoil-studio/file-storage-zome@0.500.0-rev.358b6eed8495aadf4cf16383bfe443d6ab66d859':
+    resolution: {integrity: sha512-0D3nTiDytR4Qtf0dO1WtjbtMf61klzljs+hcCFiOTsYblSYcpFuF/yBIxO1ZrGCLBnbgYWSFFcMBIewPtY3AVQ==}
 
   '@darksoil-studio/file-storage-zome@0.500.0-rev.b02d49d077bf9e4bb1caa967345ccea9ca540a65':
     resolution: {integrity: sha512-QceALJ+xRMXkIEe/OEp4YSp1wGpE2jy1784l3ZmmKdOVOr1KFqMqcubRcDaVWdrGqa5uHVOXC+U7Tn2Qwykz5Q==}
@@ -2453,7 +2453,7 @@ snapshots:
       enabled: 2.0.0
       kuler: 2.0.0
 
-  '@darksoil-studio/file-storage-zome@0.500.0-rev.27308361df4709f7cd7e2bc441aeb34154b6c91c(@floating-ui/utils@0.2.9)(@types/react@19.0.8)':
+  '@darksoil-studio/file-storage-zome@0.500.0-rev.358b6eed8495aadf4cf16383bfe443d6ab66d859(@floating-ui/utils@0.2.9)(@types/react@19.0.8)':
     dependencies:
       '@darksoil-studio/holochain-elements': 0.500.0(@floating-ui/utils@0.2.9)(@types/react@19.0.8)
       '@darksoil-studio/holochain-utils': 0.500.0

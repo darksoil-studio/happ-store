@@ -12,7 +12,7 @@
       "github:darksoil-studio/holochain-nix-builders/main-0.5";
     playground.url = "github:darksoil-studio/holochain-playground/main-0.5";
     tauri-plugin-holochain.url =
-      "github:darksoil-studio/tauri-plugin-holochain/develop";
+      "github:darksoil-studio/tauri-plugin-holochain/main-0.5";
     file-storage.url = "github:darksoil-studio/file-storage/main-0.5";
     aon.url = "github:darksoil-studio/always-online-nodes";
   };
